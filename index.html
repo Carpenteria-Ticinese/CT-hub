@@ -4,110 +4,108 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Carpenteria Ticinese · Centro comando</title>
-<meta name="theme-color" content="#16130F" />
+<meta name="theme-color" content="#F6F3EC" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="CT Comando" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232E5A3C'/%3E%3Ctext x='32' y='43' font-family='Arial' font-size='30' font-weight='700' fill='%23C8A24A' text-anchor='middle'%3ECT%3C/text%3E%3C/svg%3E" />
 <style>
-/* =========================================================================
-   CT · CENTRO COMANDO  — hub provvisorio
-   Palette: planed oak charcoal + brass hairlines + slate.  Una porta sola.
-   ========================================================================= */
 :root{
   --bg:#F6F3EC; --bg2:#FFFFFF; --bg3:#EFEAE0;
   --line:rgba(46,90,60,.20); --line2:rgba(33,30,24,.10);
-  --brass:#B8892F; --brass-soft:#C8A24A; --slate:#5B7383;
   --ink:#211E18; --ink-dim:#6B6459; --ink-faint:#9A9384;
-  --green:#2E5A3C; --green-deep:#244A30;
+  --accent:#2E5A3C; --accent-50:rgba(46,90,60,.5); --accent-15:rgba(46,90,60,.15);
   --ok:#2E7D46; --wip:#9C7018; --plan:#6E6A5E;
-  --r:16px; --rs:12px;
   --shadow:0 14px 34px -18px rgba(36,74,48,.30);
+  --r:16px; --rs:12px;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{
-  background:var(--bg);
-  color:var(--ink);
+  background:var(--bg); color:var(--ink);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased;
-  min-height:100vh;
+  font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased; min-height:100vh;
+  transition:background-color .25s,color .25s;
   background-image:
-    radial-gradient(1100px 520px at 50% -8%, rgba(46,90,60,.10), transparent 60%),
-    radial-gradient(700px 400px at 90% 110%, rgba(184,137,47,.09), transparent 60%);
+    radial-gradient(1100px 520px at 50% -8%, var(--accent-15), transparent 60%),
+    radial-gradient(700px 400px at 90% 110%, var(--accent-15), transparent 60%);
 }
-.wrap{max-width:860px;margin:0 auto;padding:22px 20px 60px}
-
-/* ---- top bar ---- */
+.wrap{position:relative;max-width:860px;margin:0 auto;padding:22px 20px 60px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 2px 30px}
 .brand{display:flex;align-items:center;gap:11px;font-weight:600;letter-spacing:.2px}
-.dot{width:11px;height:11px;border-radius:50%;background:var(--green);
-  box-shadow:0 0 0 4px rgba(46,90,60,.15)}
+.dot{width:11px;height:11px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 4px var(--accent-15)}
 .brand small{display:block;font-size:12px;font-weight:500;color:var(--ink-dim);
   letter-spacing:2.5px;text-transform:uppercase;margin-top:1px}
 .brand span{font-size:16px}
-
-/* ---- hero console ---- */
+.themebtn{background:var(--bg2);border:1px solid var(--line);border-radius:11px;
+  width:42px;height:42px;font-size:19px;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;color:var(--ink);transition:.15s}
+.themebtn:hover{background:var(--bg3)}
+.palette{position:absolute;right:20px;top:66px;background:var(--bg2);
+  border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
+  padding:12px;display:none;z-index:30;width:236px}
+.palette.on{display:block}
+.palette h4{margin:2px 4px 10px;font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--ink-faint);font-weight:600}
+.sw{display:flex;align-items:center;gap:11px;width:100%;background:transparent;
+  border:1px solid transparent;border-radius:10px;padding:8px 9px;cursor:pointer;
+  font-family:inherit;font-size:14px;color:var(--ink);text-align:left;transition:.12s}
+.sw:hover{background:var(--bg3)}
+.sw[aria-pressed="true"]{border-color:var(--accent-50)}
+.sw .prev{display:flex;flex:0 0 auto}
+.sw .prev i{width:17px;height:17px;border-radius:5px;display:block;border:1px solid rgba(0,0,0,.12)}
+.sw .prev i:last-child{margin-left:-6px}
+.sw .nm{flex:1}
+.sw .chk{color:var(--accent);opacity:0;font-size:14px;flex:0 0 auto}
+.sw[aria-pressed="true"] .chk{opacity:1}
 .hero{text-align:center;padding:14px 0 6px}
 .hero h1{font-size:26px;font-weight:600;margin:0 0 18px;letter-spacing:-.4px}
 .console{position:relative}
-.console .field{
-  display:flex;align-items:center;gap:12px;
-  background:var(--bg2);border:1px solid var(--line);
-  border-radius:var(--r);padding:16px 18px;
-  box-shadow:var(--shadow);transition:border-color .2s,box-shadow .2s;
-}
-.console .field:focus-within{
-  border-color:rgba(46,90,60,.55);
-  box-shadow:var(--shadow),0 0 0 4px rgba(46,90,60,.12);
-}
+.console .field{display:flex;align-items:center;gap:12px;background:var(--bg2);
+  border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;
+  box-shadow:var(--shadow);transition:border-color .2s,box-shadow .2s}
+.console .field:focus-within{border-color:var(--accent-50);
+  box-shadow:var(--shadow),0 0 0 4px var(--accent-15)}
 .console .field .mag{font-size:20px;opacity:.85;flex:0 0 auto}
-.console input{
-  flex:1;background:transparent;border:0;outline:0;color:var(--ink);
-  font-size:18px;font-family:inherit;
-}
+.console input{flex:1;background:transparent;border:0;outline:0;color:var(--ink);
+  font-size:18px;font-family:inherit}
 .console input::placeholder{color:var(--ink-faint)}
 .enterhint{font-size:12px;color:var(--ink-faint);border:1px solid var(--line2);
   border-radius:7px;padding:3px 8px;flex:0 0 auto}
-
-/* focus sweep underline (the signature) */
-.sweep{height:2px;margin:0 6px;border-radius:2px;overflow:hidden;
-  background:var(--line2);opacity:0;transition:opacity .25s}
+.sweep{height:2px;margin:0 6px;border-radius:2px;overflow:hidden;background:var(--line2);
+  opacity:0;transition:opacity .25s}
 .console .field:focus-within ~ .sweep{opacity:1}
 .sweep i{display:block;height:100%;width:40%;border-radius:2px;
-  background:linear-gradient(90deg,transparent,var(--brass),transparent);
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
   animation:baton 2.4s ease-in-out infinite}
 @keyframes baton{0%{transform:translateX(-60%)}50%{transform:translateX(190%)}100%{transform:translateX(-60%)}}
-
-/* ---- example chips ---- */
 .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:16px 0 4px}
 .chip{background:var(--bg2);border:1px solid var(--line2);color:var(--ink-dim);
-  font-size:13px;padding:7px 13px;border-radius:999px;cursor:pointer;
-  transition:.15s;font-family:inherit}
+  font-size:13px;padding:7px 13px;border-radius:999px;cursor:pointer;transition:.15s;font-family:inherit}
 .chip:hover{color:var(--ink);border-color:var(--line);background:var(--bg3)}
-
-/* ---- results ---- */
 .results{list-style:none;margin:14px 0 0;padding:0;display:none}
 .results.on{display:block}
-.res{display:flex;align-items:center;gap:14px;padding:13px 15px;
-  background:var(--bg2);border:1px solid var(--line2);border-radius:var(--rs);
-  margin-bottom:8px;cursor:pointer;transition:.15s;text-align:left}
-.res:hover,.res.sel{border-color:rgba(46,90,60,.5);background:var(--bg3)}
+.res{display:flex;align-items:center;gap:14px;padding:13px 15px;background:var(--bg2);
+  border:1px solid var(--line2);border-radius:var(--rs);margin-bottom:8px;cursor:pointer;
+  transition:.15s;text-align:left}
+.res:hover,.res.sel{border-color:var(--accent-50);background:var(--bg3)}
 .res .ic{font-size:22px;flex:0 0 auto;width:26px;text-align:center}
 .res .tx{flex:1;min-width:0}
 .res .tx b{font-weight:600;font-size:16px;display:block}
 .res .tx small{color:var(--ink-dim);font-size:13px}
-.res .go{color:var(--brass);font-size:18px;flex:0 0 auto}
+.res .go{color:var(--accent);font-size:18px;flex:0 0 auto}
 .res[aria-disabled="true"]{opacity:.5;cursor:not-allowed}
 .res[aria-disabled="true"]:hover{border-color:var(--line2);background:var(--bg2)}
 .res[aria-disabled="true"] .go{color:var(--ink-faint)}
 .empty{color:var(--ink-dim);text-align:center;padding:14px;font-size:14px;
   border:1px dashed var(--line2);border-radius:var(--rs);margin-top:6px}
-
-/* ---- modules ---- */
-.eyebrow{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;
-  color:var(--ink-faint);margin:44px 4px 14px}
+.eyebrow{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink-faint);
+  margin:44px 4px 14px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.card{position:relative;display:block;text-align:left;
-  background:var(--bg2);border:1px solid var(--line2);border-radius:var(--r);
-  padding:18px;cursor:pointer;transition:.18s;color:inherit;
-  font-family:inherit;width:100%}
+.card{position:relative;display:block;text-align:left;background:var(--bg2);
+  border:1px solid var(--line2);border-radius:var(--r);padding:18px;cursor:pointer;
+  transition:.18s;color:inherit;font-family:inherit;width:100%}
 .card:hover{border-color:var(--line);transform:translateY(-2px);box-shadow:var(--shadow)}
 .card.off{cursor:not-allowed}
 .card.off:hover{transform:none;box-shadow:none;border-color:var(--line2)}
@@ -115,26 +113,20 @@ body{
 .card .emoji{font-size:24px}
 .card .name{font-weight:600;font-size:17px}
 .card .desc{color:var(--ink-dim);font-size:14px;line-height:1.5}
-.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;
-  padding:4px 10px;border-radius:999px;margin-top:12px;font-weight:500;
-  border:1px solid transparent}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:4px 10px;
+  border-radius:999px;margin-top:12px;font-weight:500;border:1px solid var(--line2)}
 .pill .g{width:8px;height:8px;border-radius:50%}
-.pill.ok  {color:var(--ok); border-color:rgba(46,125,70,.28)}  .pill.ok  .g{background:var(--ok)}
-.pill.wip {color:var(--wip);border-color:rgba(156,112,24,.30)}   .pill.wip .g{background:var(--wip)}
-.pill.plan{color:var(--plan);border-color:rgba(110,106,94,.30)} .pill.plan .g{background:var(--plan)}
-.tag-ext{position:absolute;top:16px;right:16px;font-size:11px;letter-spacing:1px;
-  text-transform:uppercase;color:var(--brass);border:1px solid var(--line);
-  border-radius:6px;padding:2px 7px}
-
-/* ---- footer ---- */
+.pill.ok  {color:var(--ok)}   .pill.ok  .g{background:var(--ok)}
+.pill.wip {color:var(--wip)}  .pill.wip .g{background:var(--wip)}
+.pill.plan{color:var(--plan)} .pill.plan .g{background:var(--plan)}
 .foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line2);
   color:var(--ink-faint);font-size:13px;line-height:1.6;text-align:center}
-
 @media (max-width:560px){
   .wrap{padding:18px 15px 50px}
   .hero h1{font-size:22px}
   .grid{grid-template-columns:1fr}
   .enterhint{display:none}
+  .palette{right:15px}
 }
 @media (prefers-reduced-motion:reduce){
   .sweep i{animation:none}
@@ -145,11 +137,6 @@ body{
 <body>
 <div class="wrap">
 
-  <!-- ============================================================
-       CONFIG — INCOLLA QUI GLI URL VERI (una volta sola)
-       Lascia "" se un modulo non è ancora online: la card resta
-       visibile ma disattivata, così non hai mai un link morto.
-       ============================================================ -->
   <script>
   const APPS = [
     {
@@ -160,8 +147,8 @@ body{
       actions:[
         {label:"Registra una giornata di lavoro", kw:"giornata giornate ore lavoro registra registrare presenza operai giornta gionata", hash:""},
         {label:"Apri un cantiere",                kw:"cantiere cantieri apri apre vedere lavoro obra cantire cantiri", hash:""},
-        {label:"Spese e scontrini",               kw:"spesa spese scontrino scontrini ricevuta fattura pagare soldi scontino", hash:""},
-        {label:"Regia da fatturare",              kw:"regia fatturare fattura extra lavori aggiuntivi regi", hash:""},
+        {label:"Spese e scontrini",               kw:"spesa spese scontrino scontrini ricevuta pagare soldi scontino", hash:""},
+        {label:"Regia da fatturare",              kw:"regia fatturare extra lavori aggiuntivi regi", hash:""},
         {label:"Foto del cantiere",               kw:"foto immagini galleria cantiere fotografie", hash:""},
         {label:"Assenze e malattie",              kw:"assenza assenze malattia ferie infortunio permesso assenz", hash:""}
       ]
@@ -172,7 +159,7 @@ body{
       url:"https://carpenteria-ticinese.github.io/CT-contabilit-/",
       status:"ok", statusLabel:"Online",
       actions:[
-        {label:"Scrivere una nuova fattura",   kw:"fattura fatture nuova scrivere emettere cliente vendita fatura fatura", hash:""},
+        {label:"Scrivere una nuova fattura",   kw:"fattura fatture nuova scrivere emettere cliente vendita fatura", hash:""},
         {label:"Registrare una spesa/acquisto",kw:"spesa acquisto costo movimento registra fornitore entrata uscita", hash:""},
         {label:"Classificare conto e IVA",     kw:"conto iva classificare classifica codice piano conti", hash:""},
         {label:"Export per il commercialista", kw:"export esportare excel banana commercialista fisco contabile", hash:""}
@@ -180,32 +167,71 @@ body{
     },
     {
       id:"timber", emoji:"📐", name:"TimberMaster",
-      desc:"Preventivi, costi, margini. Online quando lo carichiamo su Netlify.",
-      url:"", /* non deployato — resta disattivato finché non c'è l'URL */
+      desc:"Preventivi, computi, costi, margini. Include il preventivatore. Online col deploy.",
+      url:"",
       status:"wip", statusLabel:"In arrivo",
       actions:[
-        {label:"Nuovo preventivo (in arrivo)", kw:"preventivo preventivare offerta costi margini timbermaster prventivo", hash:""}
+        {label:"Nuovo preventivo (in arrivo)", kw:"preventivo preventivare offerta costi margini timbermaster prventivo computi", hash:""}
       ]
     },
     {
       id:"spartizione", emoji:"🧩", name:"Spartizione",
-      desc:"Ripartizione della copertura tra più ditte.",
+      desc:"Ripartizione del manto di copertura tra le ditte.",
       url:"https://carpenteria-ticinese.github.io/spartizione-copertura/",
       status:"ok", statusLabel:"Online",
       actions:[
-        {label:"Apri Spartizione copertura", kw:"spartizione ripartizione copertura ditte grandine spartizone", hash:""}
+        {label:"Apri Spartizione copertura", kw:"spartizione ripartizione copertura tetto tegole coppi ditte grandine spartizone", hash:""}
       ]
     },
     {
       id:"preventivatore", emoji:"📗", name:"Preventivatore",
-      desc:"Il file Excel delle offerte. Sul computer o su Drive.",
-      url:"", /* file Excel: metti il link Google Drive se lo vuoi apribile da qui */
+      desc:"Il file Excel delle offerte che usi oggi. Sul computer o su Drive.",
+      url:"",
       status:"plan", statusLabel:"File Excel",
       actions:[
         {label:"Apri il Preventivatore Excel", kw:"preventivatore excel offerta file listino voci prventivatore", hash:""}
       ]
     }
   ];
+
+  const THEMES = {
+    verde:{ name:"Verde bosco", vars:{
+      "--bg":"#F6F3EC","--bg2":"#FFFFFF","--bg3":"#EFEAE0",
+      "--line":"rgba(46,90,60,.20)","--line2":"rgba(33,30,24,.10)",
+      "--ink":"#211E18","--ink-dim":"#6B6459","--ink-faint":"#9A9384",
+      "--accent":"#2E5A3C","--accent-50":"rgba(46,90,60,.5)","--accent-15":"rgba(46,90,60,.15)",
+      "--ok":"#2E7D46","--wip":"#9C7018","--plan":"#6E6A5E",
+      "--shadow":"0 14px 34px -18px rgba(36,74,48,.30)"}},
+    oro:{ name:"Oro CT", vars:{
+      "--bg":"#F7F4ED","--bg2":"#FFFFFF","--bg3":"#F0EADD",
+      "--line":"rgba(184,137,47,.22)","--line2":"rgba(33,30,24,.10)",
+      "--ink":"#211E18","--ink-dim":"#6B6459","--ink-faint":"#9A9384",
+      "--accent":"#B8892F","--accent-50":"rgba(184,137,47,.5)","--accent-15":"rgba(184,137,47,.15)",
+      "--ok":"#2E7D46","--wip":"#9C7018","--plan":"#6E6A5E",
+      "--shadow":"0 14px 34px -18px rgba(120,90,30,.28)"}},
+    ardesia:{ name:"Ardesia", vars:{
+      "--bg":"#F1F4F6","--bg2":"#FFFFFF","--bg3":"#E6ECF0",
+      "--line":"rgba(62,110,142,.22)","--line2":"rgba(25,30,35,.10)",
+      "--ink":"#1B2228","--ink-dim":"#586570","--ink-faint":"#93A0AC",
+      "--accent":"#3E6E8E","--accent-50":"rgba(62,110,142,.5)","--accent-15":"rgba(62,110,142,.15)",
+      "--ok":"#2E7D46","--wip":"#9C7018","--plan":"#6E6A5E",
+      "--shadow":"0 14px 34px -18px rgba(40,70,95,.28)"}},
+    sabbia:{ name:"Sabbia", vars:{
+      "--bg":"#F5EEE4","--bg2":"#FFFFFF","--bg3":"#EDE3D4",
+      "--line":"rgba(180,101,58,.22)","--line2":"rgba(33,28,22,.10)",
+      "--ink":"#2A211A","--ink-dim":"#6B5E4F","--ink-faint":"#A2937F",
+      "--accent":"#B4653A","--accent-50":"rgba(180,101,58,.5)","--accent-15":"rgba(180,101,58,.15)",
+      "--ok":"#2E7D46","--wip":"#9C7018","--plan":"#6E6A5E",
+      "--shadow":"0 14px 34px -18px rgba(120,70,40,.26)"}},
+    grafite:{ name:"Grafite (scuro)", vars:{
+      "--bg":"#16130F","--bg2":"#1E1A14","--bg3":"#26211A",
+      "--line":"rgba(200,162,74,.18)","--line2":"rgba(241,235,221,.10)",
+      "--ink":"#F1EBDD","--ink-dim":"#A79E8C","--ink-faint":"#6F6858",
+      "--accent":"#C8A24A","--accent-50":"rgba(200,162,74,.5)","--accent-15":"rgba(200,162,74,.16)",
+      "--ok":"#8FBF6E","--wip":"#E0B152","--plan":"#9A9384",
+      "--shadow":"0 18px 50px -20px rgba(0,0,0,.7)"}}
+  };
+  const THEME_ORDER = ["verde","oro","ardesia","sabbia","grafite"];
   </script>
 
   <div class="top">
@@ -213,6 +239,12 @@ body{
       <span class="dot" aria-hidden="true"></span>
       <div><span>Carpenteria Ticinese</span><small>Centro comando</small></div>
     </div>
+    <button class="themebtn" id="themeBtn" aria-label="Cambia colori (tavolozza)"
+            aria-haspopup="true" aria-expanded="false">🎨</button>
+  </div>
+
+  <div class="palette" id="palette" role="menu" aria-label="Tavolozza colori">
+    <h4>Tavolozza colori</h4>
   </div>
 
   <div class="hero">
@@ -228,7 +260,6 @@ body{
       </div>
       <div class="sweep" aria-hidden="true"><i></i></div>
     </div>
-
     <div class="chips" id="chips"></div>
     <ul class="results" id="results" role="listbox" aria-label="Risultati"></ul>
   </div>
@@ -245,72 +276,92 @@ body{
 </div>
 
 <script>
-/* ---------- helpers ---------- */
-const norm = s => (s||"").toLowerCase()
-  .normalize("NFD").replace(/[\u0300-\u036f]/g,"");   // toglie accenti
+function applyTheme(key){
+  const t = THEMES[key]; if(!t) return;
+  const root = document.documentElement;
+  for(const k in t.vars){ root.style.setProperty(k, t.vars[k]); }
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if(meta) meta.setAttribute("content", t.vars["--bg"]);
+  try{ localStorage.setItem("ct_hub_theme", key); }catch(e){}
+  document.querySelectorAll(".sw").forEach(s=>{
+    s.setAttribute("aria-pressed", s.dataset.k===key ? "true":"false");
+  });
+}
+(function buildPalette(){
+  const pal = document.getElementById("palette");
+  THEME_ORDER.forEach(k=>{
+    const t = THEMES[k];
+    const b = document.createElement("button");
+    b.className="sw"; b.dataset.k=k; b.setAttribute("role","menuitemradio");
+    b.setAttribute("aria-pressed","false"); b.setAttribute("aria-label","Tema "+t.name);
+    b.innerHTML =
+      '<span class="prev"><i style="background:'+t.vars["--bg2"]+'"></i>'+
+      '<i style="background:'+t.vars["--accent"]+';border-color:transparent"></i></span>'+
+      '<span class="nm">'+t.name+'</span><span class="chk" aria-hidden="true">✓</span>';
+    b.onclick=()=>applyTheme(k);
+    pal.appendChild(b);
+  });
+})();
+(function(){
+  const btn=document.getElementById("themeBtn"), pal=document.getElementById("palette");
+  btn.addEventListener("click", e=>{ e.stopPropagation();
+    const on=pal.classList.toggle("on"); btn.setAttribute("aria-expanded", on?"true":"false"); });
+  document.addEventListener("click", e=>{
+    if(!pal.contains(e.target) && e.target!==btn){ pal.classList.remove("on");
+      btn.setAttribute("aria-expanded","false"); } });
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape"){ pal.classList.remove("on");
+    btn.setAttribute("aria-expanded","false"); } });
+})();
+let savedTheme="verde";
+try{ savedTheme = localStorage.getItem("ct_hub_theme") || "verde"; }catch(e){}
+applyTheme(savedTheme);
+
+const norm = s => (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 const $ = id => document.getElementById(id);
 
-/* costruisce la lista piatta di destinazioni dalle app + azioni */
 const DEST = [];
 APPS.forEach(a=>{
   const enabled = !!a.url;
   a.actions.forEach(act=>{
-    DEST.push({
-      app:a.name, emoji:a.emoji, label:act.label,
+    DEST.push({ app:a.name, emoji:a.emoji, label:act.label,
       hay:norm(a.name+" "+act.label+" "+act.kw),
-      url: enabled ? a.url + (act.hash||"") : "",
-      enabled
-    });
+      url: enabled ? a.url + (act.hash||"") : "", enabled });
   });
 });
 
-/* ---------- ricerca ---------- */
-let sel = -1, shown = [];
+let sel=-1, shown=[];
 function search(qraw){
-  const q = norm(qraw).trim();
-  const box = $("results");
+  const q=norm(qraw).trim(), box=$("results");
   if(!q){ box.classList.remove("on"); box.innerHTML=""; sel=-1; shown=[];
     $("q").setAttribute("aria-expanded","false"); return; }
-
-  const toks = q.split(/\s+/);
-  shown = DEST
-    .map(d=>{ let sc=0; toks.forEach(t=>{ if(d.hay.includes(t)) sc++; });
-              return {d, sc}; })
-    .filter(x=>x.sc>0)
-    .sort((a,b)=>b.sc-a.sc)
-    .slice(0,6)
-    .map(x=>x.d);
-
+  const toks=q.split(/\s+/);
+  shown = DEST.map(d=>{ let sc=0; toks.forEach(t=>{ if(d.hay.includes(t)) sc++; }); return {d,sc}; })
+    .filter(x=>x.sc>0).sort((a,b)=>b.sc-a.sc).slice(0,6).map(x=>x.d);
   box.innerHTML="";
   if(!shown.length){
     box.innerHTML='<div class="empty">Nessuna scorciatoia trovata. Apri un modulo qui sotto ↓</div>';
   } else {
-    shown.forEach((d,i)=>{
+    shown.forEach(d=>{
       const li=document.createElement("li");
-      li.className="res"; li.setAttribute("role","option");
-      li.setAttribute("aria-selected","false");
+      li.className="res"; li.setAttribute("role","option"); li.setAttribute("aria-selected","false");
       if(!d.enabled) li.setAttribute("aria-disabled","true");
-      li.innerHTML=
-        '<span class="ic">'+d.emoji+'</span>'+
-        '<span class="tx"><b>'+d.label+'</b><small>'+d.app+
-          (d.enabled?'':' · URL da impostare')+'</small></span>'+
+      li.innerHTML='<span class="ic">'+d.emoji+'</span>'+
+        '<span class="tx"><b>'+d.label+'</b><small>'+d.app+(d.enabled?'':' · URL da impostare')+'</small></span>'+
         '<span class="go">'+(d.enabled?'→':'•')+'</span>';
-      li.onclick=()=>open(d);
+      li.onclick=()=>openDest(d);
       box.appendChild(li);
     });
   }
-  box.classList.add("on"); sel=-1;
-  $("q").setAttribute("aria-expanded","true");
+  box.classList.add("on"); sel=-1; $("q").setAttribute("aria-expanded","true");
 }
-function open(d){ if(d && d.enabled && d.url) location.href=d.url; }
+function openDest(d){ if(d && d.enabled && d.url) location.href=d.url; }
 
-/* ---------- tastiera ---------- */
 $("q").addEventListener("input", e=>search(e.target.value));
 $("q").addEventListener("keydown", e=>{
   const items=[...document.querySelectorAll(".res")];
   if(e.key==="ArrowDown"){ e.preventDefault(); sel=Math.min(sel+1,items.length-1); }
   else if(e.key==="ArrowUp"){ e.preventDefault(); sel=Math.max(sel-1,0); }
-  else if(e.key==="Enter"){ if(shown[sel]) open(shown[sel]); else if(shown[0]) open(shown[0]); return; }
+  else if(e.key==="Enter"){ if(shown[sel]) openDest(shown[sel]); else if(shown[0]) openDest(shown[0]); return; }
   else if(e.key==="Escape"){ e.target.value=""; search(""); return; }
   else return;
   items.forEach((it,i)=>{ it.classList.toggle("sel",i===sel);
@@ -318,7 +369,6 @@ $("q").addEventListener("keydown", e=>{
     if(i===sel) it.scrollIntoView({block:"nearest"}); });
 });
 
-/* ---------- chips esempio ---------- */
 ["Registra giornata","Nuova fattura","Apri un cantiere","Spese e scontrini","Nuovo preventivo"]
 .forEach(t=>{
   const b=document.createElement("button"); b.className="chip"; b.textContent=t;
@@ -326,17 +376,14 @@ $("q").addEventListener("keydown", e=>{
   $("chips").appendChild(b);
 });
 
-/* ---------- cards moduli ---------- */
 APPS.forEach(a=>{
   const enabled=!!a.url;
   const el=document.createElement("button");
   el.className="card"+(enabled?"":" off");
   el.setAttribute("aria-label",a.name+" — "+a.statusLabel);
   if(!enabled) el.setAttribute("aria-disabled","true");
-  el.innerHTML=
-    (a.external?'<span class="tag-ext">esterno</span>':'')+
-    '<div class="head"><span class="emoji">'+a.emoji+'</span>'+
-      '<span class="name">'+a.name+'</span></div>'+
+  el.innerHTML='<div class="head"><span class="emoji">'+a.emoji+'</span>'+
+    '<span class="name">'+a.name+'</span></div>'+
     '<div class="desc">'+a.desc+'</div>'+
     '<span class="pill '+a.status+'"><span class="g"></span>'+
       a.statusLabel+(enabled?'':' · URL da impostare')+'</span>';
@@ -344,7 +391,6 @@ APPS.forEach(a=>{
   $("grid").appendChild(el);
 });
 
-/* focus alla partenza su desktop */
 if(!("ontouchstart" in window)) $("q").focus();
 </script>
 </body>
