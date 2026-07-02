@@ -10,7 +10,12 @@
 <meta name="apple-mobile-web-app-title" content="CT Comando" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232E5A3C'/%3E%3Ctext x='32' y='43' font-family='Arial' font-size='30' font-weight='700' fill='%23C8A24A' text-anchor='middle'%3ECT%3C/text%3E%3C/svg%3E" />
 <style>
+/* =========================================================================
+   CT · CENTRO COMANDO — hub provvisorio
+   Colori pilotati da token --*  → la tavolozza (bottone 🎨) li cambia dal vivo.
+   ========================================================================= */
 :root{
+  /* tema di default: Verde bosco (chiaro) */
   --bg:#F6F3EC; --bg2:#FFFFFF; --bg3:#EFEAE0;
   --line:rgba(46,90,60,.20); --line2:rgba(33,30,24,.10);
   --ink:#211E18; --ink-dim:#6B6459; --ink-faint:#9A9384;
@@ -31,6 +36,8 @@ body{
     radial-gradient(700px 400px at 90% 110%, var(--accent-15), transparent 60%);
 }
 .wrap{position:relative;max-width:860px;margin:0 auto;padding:22px 20px 60px}
+
+/* ---- top bar ---- */
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 2px 30px}
 .brand{display:flex;align-items:center;gap:11px;font-weight:600;letter-spacing:.2px}
 .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);
@@ -39,9 +46,11 @@ body{
   letter-spacing:2.5px;text-transform:uppercase;margin-top:1px}
 .brand span{font-size:16px}
 .themebtn{background:var(--bg2);border:1px solid var(--line);border-radius:11px;
-  width:42px;height:42px;font-size:19px;cursor:pointer;display:flex;align-items:center;
-  justify-content:center;color:var(--ink);transition:.15s}
+  height:42px;padding:0 15px;gap:8px;font-size:14px;font-weight:500;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;color:var(--ink);transition:.15s}
 .themebtn:hover{background:var(--bg3)}
+
+/* ---- palette panel ---- */
 .palette{position:absolute;right:20px;top:66px;background:var(--bg2);
   border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
   padding:12px;display:none;z-index:30;width:236px}
@@ -59,6 +68,8 @@ body{
 .sw .nm{flex:1}
 .sw .chk{color:var(--accent);opacity:0;font-size:14px;flex:0 0 auto}
 .sw[aria-pressed="true"] .chk{opacity:1}
+
+/* ---- hero console ---- */
 .hero{text-align:center;padding:14px 0 6px}
 .hero h1{font-size:26px;font-weight:600;margin:0 0 18px;letter-spacing:-.4px}
 .console{position:relative}
@@ -80,10 +91,14 @@ body{
   background:linear-gradient(90deg,transparent,var(--accent),transparent);
   animation:baton 2.4s ease-in-out infinite}
 @keyframes baton{0%{transform:translateX(-60%)}50%{transform:translateX(190%)}100%{transform:translateX(-60%)}}
+
+/* ---- example chips ---- */
 .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:16px 0 4px}
 .chip{background:var(--bg2);border:1px solid var(--line2);color:var(--ink-dim);
   font-size:13px;padding:7px 13px;border-radius:999px;cursor:pointer;transition:.15s;font-family:inherit}
 .chip:hover{color:var(--ink);border-color:var(--line);background:var(--bg3)}
+
+/* ---- results ---- */
 .results{list-style:none;margin:14px 0 0;padding:0;display:none}
 .results.on{display:block}
 .res{display:flex;align-items:center;gap:14px;padding:13px 15px;background:var(--bg2);
@@ -100,6 +115,8 @@ body{
 .res[aria-disabled="true"] .go{color:var(--ink-faint)}
 .empty{color:var(--ink-dim);text-align:center;padding:14px;font-size:14px;
   border:1px dashed var(--line2);border-radius:var(--rs);margin-top:6px}
+
+/* ---- modules ---- */
 .eyebrow{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink-faint);
   margin:44px 4px 14px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -119,8 +136,11 @@ body{
 .pill.ok  {color:var(--ok)}   .pill.ok  .g{background:var(--ok)}
 .pill.wip {color:var(--wip)}  .pill.wip .g{background:var(--wip)}
 .pill.plan{color:var(--plan)} .pill.plan .g{background:var(--plan)}
+
+/* ---- footer ---- */
 .foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line2);
   color:var(--ink-faint);font-size:13px;line-height:1.6;text-align:center}
+
 @media (max-width:560px){
   .wrap{padding:18px 15px 50px}
   .hero h1{font-size:22px}
@@ -137,6 +157,10 @@ body{
 <body>
 <div class="wrap">
 
+  <!-- ============================================================
+       CONFIG — INCOLLA QUI GLI URL VERI. Lascia "" se un modulo
+       non è ancora online: la card resta visibile ma disattivata.
+       ============================================================ -->
   <script>
   const APPS = [
     {
@@ -191,9 +215,37 @@ body{
       actions:[
         {label:"Apri il Preventivatore Excel", kw:"preventivatore excel offerta file listino voci prventivatore", hash:""}
       ]
+    },
+    {
+      id:"collaboratori", emoji:"👷", name:"TM Collaboratori",
+      desc:"Gestione collaboratori — versione interna di StaffLink.",
+      url:"",
+      status:"plan", statusLabel:"Da avviare",
+      actions:[
+        {label:"Apri TM Collaboratori", kw:"collaboratori personale stafflink hr permessi assenze documenti certificazioni", hash:""}
+      ]
+    },
+    {
+      id:"fornitori", emoji:"🏢", name:"TM Radar Fornitori",
+      desc:"Ditte, prodotti e materiali da valutare e scegliere, per categoria.",
+      url:"",
+      status:"plan", statusLabel:"Da avviare",
+      actions:[
+        {label:"Apri TM Radar Fornitori", kw:"fornitori radar ditte aziende prodotti materiali valutare scegliere legname isolanti fissaggi tetto", hash:""}
+      ]
+    },
+    {
+      id:"paghe", emoji:"💰", name:"TM Paghe",
+      desc:"Registra le paghe (bozza). Gli importi vanno validati col commercialista prima dell'uso.",
+      url:"",
+      status:"wip", statusLabel:"Bozza",
+      actions:[
+        {label:"Apri TM Paghe", kw:"paghe stipendi salari buste paga prepaghe lordo netto", hash:""}
+      ]
     }
   ];
 
+  /* ---- TEMI della tavolozza (bottone 🎨) ---- */
   const THEMES = {
     verde:{ name:"Verde bosco", vars:{
       "--bg":"#F6F3EC","--bg2":"#FFFFFF","--bg3":"#EFEAE0",
@@ -240,7 +292,7 @@ body{
       <div><span>Carpenteria Ticinese</span><small>Centro comando</small></div>
     </div>
     <button class="themebtn" id="themeBtn" aria-label="Cambia colori (tavolozza)"
-            aria-haspopup="true" aria-expanded="false">🎨</button>
+            aria-haspopup="true" aria-expanded="false"><span aria-hidden="true">🎨</span> Tema</button>
   </div>
 
   <div class="palette" id="palette" role="menu" aria-label="Tavolozza colori">
@@ -276,6 +328,7 @@ body{
 </div>
 
 <script>
+/* ---------- tavolozza ---------- */
 function applyTheme(key){
   const t = THEMES[key]; if(!t) return;
   const root = document.documentElement;
@@ -316,6 +369,7 @@ let savedTheme="verde";
 try{ savedTheme = localStorage.getItem("ct_hub_theme") || "verde"; }catch(e){}
 applyTheme(savedTheme);
 
+/* ---------- ricerca ---------- */
 const norm = s => (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 const $ = id => document.getElementById(id);
 
