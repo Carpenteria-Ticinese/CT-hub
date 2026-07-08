@@ -192,7 +192,7 @@ body{
     {
       id:"timber", emoji:"📐", name:"TimberMaster",
       desc:"Preventivi, computi, costi, margini. Include il preventivatore. Online col deploy.",
-      url:"",
+      url:"", spec:"motore",
       status:"wip", statusLabel:"In arrivo",
       actions:[
         {label:"Nuovo preventivo (in arrivo)", kw:"preventivo preventivare offerta costi margini timbermaster prventivo computi", hash:""}
@@ -210,7 +210,7 @@ body{
     {
       id:"preventivatore", emoji:"📗", name:"Preventivatore",
       desc:"Il file Excel delle offerte che usi oggi. Sul computer o su Drive.",
-      url:"",
+      url:"", spec:"motore",
       status:"plan", statusLabel:"File Excel",
       actions:[
         {label:"Apri il Preventivatore Excel", kw:"preventivatore excel offerta file listino voci prventivatore", hash:""}
@@ -219,7 +219,7 @@ body{
     {
       id:"collaboratori", emoji:"👷", name:"TM Collaboratori",
       desc:"Gestione collaboratori — versione interna di StaffLink.",
-      url:"",
+      url:"", spec:"collaboratori",
       status:"plan", statusLabel:"Da avviare",
       actions:[
         {label:"Apri TM Collaboratori", kw:"collaboratori personale stafflink hr permessi assenze documenti certificazioni", hash:""}
@@ -228,7 +228,7 @@ body{
     {
       id:"fornitori", emoji:"🏢", name:"TM Radar Fornitori",
       desc:"Ditte, prodotti e materiali da valutare e scegliere, per categoria.",
-      url:"",
+      url:"", spec:"fornitori",
       status:"plan", statusLabel:"Da avviare",
       actions:[
         {label:"Apri TM Radar Fornitori", kw:"fornitori radar ditte aziende prodotti materiali valutare scegliere legname isolanti fissaggi tetto", hash:""}
@@ -237,7 +237,7 @@ body{
     {
       id:"paghe", emoji:"💰", name:"TM Paghe",
       desc:"Registra le paghe (bozza). Gli importi vanno validati col commercialista prima dell'uso.",
-      url:"",
+      url:"https://carpenteria-ticinese.github.io/CT-paghe/",
       status:"wip", statusLabel:"Bozza",
       actions:[
         {label:"Apri TM Paghe", kw:"paghe stipendi salari buste paga prepaghe lordo netto", hash:""}
@@ -375,11 +375,13 @@ const $ = id => document.getElementById(id);
 
 const DEST = [];
 APPS.forEach(a=>{
-  const enabled = !!a.url;
+  const isSpec = !a.url && !!a.spec;
+  const base = a.url || (isSpec ? "spec.html?m="+a.spec : "");
+  const enabled = !!base;
   a.actions.forEach(act=>{
     DEST.push({ app:a.name, emoji:a.emoji, label:act.label,
       hay:norm(a.name+" "+act.label+" "+act.kw),
-      url: enabled ? a.url + (act.hash||"") : "", enabled });
+      url: enabled ? (a.url ? a.url + (act.hash||"") : base) : "", enabled, isSpec });
   });
 });
 
@@ -400,7 +402,7 @@ function search(qraw){
       li.className="res"; li.setAttribute("role","option"); li.setAttribute("aria-selected","false");
       if(!d.enabled) li.setAttribute("aria-disabled","true");
       li.innerHTML='<span class="ic">'+d.emoji+'</span>'+
-        '<span class="tx"><b>'+d.label+'</b><small>'+d.app+(d.enabled?'':' · URL da impostare')+'</small></span>'+
+        '<span class="tx"><b>'+d.label+'</b><small>'+d.app+(d.enabled?(d.isSpec?' · Vedi progetto':''):' · URL da impostare')+'</small></span>'+
         '<span class="go">'+(d.enabled?'→':'•')+'</span>';
       li.onclick=()=>openDest(d);
       box.appendChild(li);
@@ -431,7 +433,9 @@ $("q").addEventListener("keydown", e=>{
 });
 
 APPS.forEach(a=>{
-  const enabled=!!a.url;
+  const isSpec = !a.url && !!a.spec;
+  const target = a.url || (isSpec ? "spec.html?m="+a.spec : "");
+  const enabled = !!target;
   const el=document.createElement("button");
   el.className="card"+(enabled?"":" off");
   el.setAttribute("aria-label",a.name+" — "+a.statusLabel);
@@ -440,8 +444,8 @@ APPS.forEach(a=>{
     '<span class="name">'+a.name+'</span></div>'+
     '<div class="desc">'+a.desc+'</div>'+
     '<span class="pill '+a.status+'"><span class="g"></span>'+
-      a.statusLabel+(enabled?'':' · URL da impostare')+'</span>';
-  el.onclick=()=>{ if(enabled) location.href=a.url; };
+      a.statusLabel+(enabled?(isSpec?' · Vedi progetto →':''):' · URL da impostare')+'</span>';
+  el.onclick=()=>{ if(enabled) location.href=target; };
   $("grid").appendChild(el);
 });
 
