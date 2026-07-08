@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blueprint · Carpenteria Ticinese</title>
+<meta name="theme-color" content="#F6F3EC" />
+<style>
+:root{
+  --bg:#F6F3EC; --bg2:#FFFFFF; --bg3:#EFEAE0;
+  --line:rgba(46,90,60,.20); --line2:rgba(33,30,24,.10);
+  --ink:#211E18; --ink-dim:#6B6459; --ink-faint:#9A9384;
+  --accent:#2E5A3C; --accent-15:rgba(46,90,60,.15); --gold:#B8892F;
+  --built:#2E7D46; --wip:#9C7018; --plan:#6E6A5E;
+  --shadow:0 14px 34px -18px rgba(36,74,48,.30); --r:16px; --rs:12px;
+}
+*{box-sizing:border-box} html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh;
+  background-image:radial-gradient(1100px 520px at 50% -8%, var(--accent-15), transparent 60%);}
+.wrap{max-width:680px;margin:0 auto;padding:20px 18px 60px}
+.back{display:inline-flex;align-items:center;gap:7px;color:var(--accent);text-decoration:none;font-size:14px;font-weight:500;padding:8px 0;cursor:pointer;background:none;border:0;font-family:inherit}
+.banner{display:flex;gap:8px;background:var(--bg3);border:1px solid var(--line2);border-radius:var(--rs);padding:10px 13px;font-size:13px;color:var(--ink-dim);margin:6px 0 22px}
+h1{font-size:24px;font-weight:600;margin:0 0 3px;letter-spacing:-.3px}
+.sub{color:var(--ink-dim);font-size:14px;margin:0 0 22px}
+/* index grid */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{text-align:left;background:var(--bg2);border:1px solid var(--line2);border-radius:var(--r);padding:16px;cursor:pointer;transition:.16s;font-family:inherit;color:inherit;width:100%}
+.card:hover{border-color:var(--line);transform:translateY(-2px);box-shadow:var(--shadow)}
+.card .h{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+.card .em{font-size:23px} .card .nm{font-weight:600;font-size:16px}
+.card .tl{color:var(--ink-dim);font-size:13px;line-height:1.45}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;padding:4px 10px;border-radius:999px;font-weight:600;border:1px solid var(--line2);margin-top:11px}
+.pill .g{width:8px;height:8px;border-radius:50%}
+.pill.built{color:var(--built)} .pill.built .g{background:var(--built)}
+.pill.wip{color:var(--wip)} .pill.wip .g{background:var(--wip)}
+.pill.plan{color:var(--plan)} .pill.plan .g{background:var(--plan)}
+/* module view */
+.head{display:flex;align-items:flex-start;gap:13px;margin-bottom:4px}
+.head .em{font-size:32px} .head h1{font-size:23px;margin:0}
+.tagline{color:var(--ink-dim);font-size:15px;margin:8px 0 20px}
+.sec{background:var(--bg2);border:1px solid var(--line2);border-radius:var(--r);padding:16px 18px;margin-bottom:12px}
+.sec h3{margin:0 0 10px;font-size:15px;display:flex;align-items:center;gap:8px}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;gap:10px;padding:6px 0;font-size:14.5px;line-height:1.45;border-top:1px solid var(--line2)}
+.list li:first-child{border-top:0}
+.list li .i{flex:0 0 auto;width:16px}
+.who{display:flex;gap:8px;flex-wrap:wrap}
+.badge{font-size:13px;padding:6px 12px;border-radius:999px;font-weight:500}
+.badge.prog{background:rgba(46,90,60,.12);color:var(--accent)}
+.badge.code{background:rgba(184,137,47,.14);color:var(--gold)}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.nav button{flex:1;background:var(--bg2);border:1px solid var(--line2);border-radius:12px;padding:11px;cursor:pointer;font-family:inherit;font-size:13.5px;color:var(--ink);transition:.15s}
+.nav button:hover{border-color:var(--line);background:var(--bg3)}
+.nav button:disabled{opacity:.4;cursor:default}
+.foot{margin-top:30px;padding-top:14px;border-top:1px solid var(--line2);color:var(--ink-faint);font-size:12.5px;text-align:center}
+@media(max-width:520px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+const ST={built:"Online",wip:"In corso",plan:"Da fare"};
+const MODULES={
+  pipeline:{emoji:"🔄",name:"Ciclo di vita del lavoro",status:"plan",
+    tagline:"La spina dorsale: dal lead alla garanzia, con i dati creati una volta e propagati a tutti i moduli.",
+    fa:["Lead (chiamata/mail) → offerta → in valutazione → preso o perso.","Se preso: un solo record Cliente+Commessa che si propaga a fattura, cantiere, squadre.","Registro persi E presi, entrambi col motivo (strategia).","Dopo la consegna: manutenzione, garanzia, analisi dei difetti ricorrenti.","Fasi/squadre: una fase = continuo, più fasi = a spezzoni; squadre interne o esterne."],
+    ci:["Niente di questo modulo è costruito.","Esistono i moduli a valle dove i dati devono arrivare (Cantieri, Pre-contabilità)."],
+    manca:["Modello dati unico Cliente+Commessa (la fondazione).","Stati/pipeline e propagazione automatica ai moduli.","Registro persi/presi + motivi.","Manutenzione, garanzia, analisi difetti.","Agenda appuntamenti collegata a Google/Outlook, con giorni di chiusura aziendale."],
+    chi:[["prog","Fondazione dati + propagazione = Programmatore"],["code","Registro persi/motivi = Code"]]},
+
+  motore:{emoji:"📐",name:"Motore prezzi (TimberMaster)",status:"plan",
+    tagline:"Il cuore del prodotto. Trasforma una voce in un prezzo, con tempi e lavorazioni configurabili per azienda.",
+    fa:["Voce → (materiale×scarto + terzi + manodopera + macchine) × guadagno × imprevisti = prezzo.","Lavorazioni e tariffe configurabili per azienda (non fisse a 7).","Interruttore cliente: privato oppure impresa, mai insieme.","Costo reale vs prezzo di vendita deciso, sempre visibili tutti e due.","Anello: cantiere → minuti reali → correggi i tempi → preventivo più preciso."],
+    ci:["L'Excel MODELLO 0626 con tutta la logica di prezzo e margine (il capitolato reale).","TimberMaster ha la struttura base, ma con bug sui prezzi aperti."],
+    manca:["Il sistema N lavorazioni nel codice (oggi TM ne gestisce una).","Modulo computi (quantità → base dell'offerta).","Tariffe derivate dai costi fissi/magazzino.","Prova di controllo: stessi input = stesso numero dell'Excel."],
+    chi:[["prog","Tutto il motore = Programmatore senior. MAI Code — un errore = offerte sbagliate."]]},
+
+  paghe:{emoji:"💰",name:"TM Paghe",status:"wip",
+    tagline:"Registra le paghe in bozza. Online, ma da validare col commercialista.",
+    fa:["Registra le paghe al lordo (bozza di lavoro).","In futuro: ore da Cantieri, straordinari, indennità, 13ª."],
+    ci:["Online (CT-paghe). Registra al lordo.","ErrorBoundary e struttura base a posto."],
+    manca:["Validazione col commercialista prima dell'uso ufficiale.","Collegamento automatico delle ore da App Cantieri.","Straordinari, indennità trasferta, 13ª."],
+    chi:[["code","Funzioni = Code"],["prog","Validazione legale = commercialista"]]},
+
+  collaboratori:{emoji:"👷",name:"TM Collaboratori",status:"plan",
+    tagline:"Gestione del personale interno — versione ridotta di StaffLink.",
+    fa:["Anagrafica collaboratori, documenti, patenti/patentini con scadenze.","Assenze, permessi, presenze cantiere collegate.","Ricerca rapida con stato a colpo d'occhio."],
+    ci:["App costruita (React). Funziona sul PC.","Non ancora online."],
+    manca:["Deploy su Netlify (non gira su GitHub Pages).","Anagrafica operai unica condivisa con App Cantieri."],
+    chi:[["code","Deploy + funzioni = Code"],["prog","Anagrafica unica = Programmatore"]]},
+
+  fornitori:{emoji:"🏢",name:"TM Radar Fornitori",status:"wip",
+    tagline:"Schedare e valutare ditte, prodotti e materiali per categoria.",
+    fa:["Elenco fornitori/prodotti per categoria (legname, isolanti, fissaggi, tetto…).","Valutazione e scelta, con commenti e link.","Storico prezzi per capire aumenti nel tempo (futuro)."],
+    ci:["In costruzione con Code.","105 fornitori reali già importati dall'Excel."],
+    manca:["Completare le funzioni.","Deploy (Netlify se React).","Storico prezzi e avvisi aumenti."],
+    chi:[["code","Costruzione + deploy = Code"]]},
+
+  cantieri:{emoji:"🏗️",name:"App Cantieri",status:"built",
+    tagline:"Gestione quotidiana del cantiere. In produzione con dati reali.",
+    fa:["Giornate, ore, foto, spese, regia da fatturare, assenze.","È anche la miniera dei tempi reali che affina il motore prezzi."],
+    ci:["Online e funzionante, usata su dati reali."],
+    manca:["Fix sicurezza: filtro azienda_id (oggi mostra tutto).","Errori Supabase silenziosi: un salvataggio può fallire senza avviso.","Formati svizzeri (date/CHF) da uniformare."],
+    chi:[["code","Fix piccoli = Code"],["prog","Multi-azienda = Programmatore, quando si vende"]]},
+
+  precont:{emoji:"🧾",name:"Pre-contabilità",status:"built",
+    tagline:"Movimenti, IVA, fatture, export per il commercialista.",
+    fa:["Registra movimenti, mette conto e IVA, esporta al commercialista.","Qui si scrivono anche le fatture."],
+    ci:["Online e funzionante."],
+    manca:["Filtro azienda_id nelle letture da App Cantieri (sicurezza).","In futuro: confluisce dentro TimberMaster."],
+    chi:[["code","Fix = Code"]]},
+
+  spartizione:{emoji:"🧩",name:"Spartizione copertura",status:"built",
+    tagline:"Ripartizione del manto di copertura tra le ditte, con calcolo tegole.",
+    fa:["Calcola la spartizione della copertura e le quantità (tegole/coppi).","Usabile da te e proponibile ad altre ditte."],
+    ci:["Online. Calcolo tegole appena corretto — da verificare su caso reale."],
+    manca:["Verifica del fix su tetti reali (i numeri devono tornare).","Versioning dei dati salvati; auth se diventa modulo web."],
+    chi:[["code","Correzioni = Code"],["prog","Verifica numeri = Umberto"]]}
+};
+const ORDER=["pipeline","motore","cantieri","precont","spartizione","paghe","collaboratori","fornitori"];
+
+function el(h){const d=document.createElement("div");d.innerHTML=h;return d.firstElementChild;}
+function pill(s){return '<span class="pill '+s+'"><span class="g"></span>'+ST[s]+'</span>';}
+
+function renderIndex(){
+  let cards="";
+  ORDER.forEach(id=>{const m=MODULES[id];
+    cards+='<button class="card" onclick="go(\''+id+'\')">'+
+      '<div class="h"><span class="em">'+m.emoji+'</span><span class="nm">'+m.name+'</span></div>'+
+      '<div class="tl">'+m.tagline+'</div>'+pill(m.status)+'</button>';});
+  document.getElementById("app").innerHTML=
+    '<h1>Blueprint dell\'ecosistema</h1>'+
+    '<p class="sub">Carpenteria Ticinese · TimberMaster. Tocca un modulo per vedere cosa farà, cosa c\'è e cosa manca.</p>'+
+    '<div class="banner">🧭 Anteprima del progetto — le funzioni non sono tutte attive. Verde = online · giallo = in corso · grigio = da fare.</div>'+
+    '<div class="grid">'+cards+'</div>'+
+    '<div class="foot">Carpenteria Ticinese · Blueprint — pagina descrittiva, onesta su cosa c\'è e cosa manca.</div>';
+  window.scrollTo(0,0);
+}
+function renderModule(id){
+  const m=MODULES[id]; const i=ORDER.indexOf(id);
+  const li=a=>a.map(x=>'<li><span class="i">•</span>'+x+'</li>').join("");
+  const liq=a=>a.map(x=>'<li><span class="i">✅</span>'+x+'</li>').join("");
+  const lim=a=>a.map(x=>'<li><span class="i">⬜</span>'+x+'</li>').join("");
+  const who=m.chi.map(c=>'<span class="badge '+c[0]+'">'+c[1]+'</span>').join("");
+  const prev=i>0?ORDER[i-1]:null, next=i<ORDER.length-1?ORDER[i+1]:null;
+  document.getElementById("app").innerHTML=
+    '<button class="back" onclick="go(\'\')">← Tutti i moduli</button>'+
+    '<div class="head"><span class="em">'+m.emoji+'</span><div><h1>'+m.name+'</h1>'+pill(m.status)+'</div></div>'+
+    '<p class="tagline">'+m.tagline+'</p>'+
+    '<div class="sec"><h3>🎯 Cosa farà</h3><ul class="list">'+li(m.fa)+'</ul></div>'+
+    '<div class="sec"><h3>✅ Cosa c\'è già</h3><ul class="list">'+liq(m.ci)+'</ul></div>'+
+    '<div class="sec"><h3>⬜ Cosa manca</h3><ul class="list">'+lim(m.manca)+'</ul></div>'+
+    '<div class="sec"><h3>🛠️ Chi lo costruisce</h3><div class="who">'+who+'</div></div>'+
+    '<div class="nav">'+
+      '<button '+(prev?'onclick="go(\''+prev+'\')"':'disabled')+'>← '+(prev?MODULES[prev].name:'')+'</button>'+
+      '<button '+(next?'onclick="go(\''+next+'\')"':'disabled')+'>'+(next?MODULES[next].name:'')+' →</button>'+
+    '</div>';
+  window.scrollTo(0,0);
+}
+function go(id){
+  if(id && MODULES[id]){ history.replaceState(null,"","?m="+id); renderModule(id); }
+  else { history.replaceState(null,"","?"); renderIndex(); }
+}
+const p=new URLSearchParams(location.search).get("m");
+if(p && MODULES[p]) renderModule(p); else renderIndex();
+</script>
+</body>
+</html>
