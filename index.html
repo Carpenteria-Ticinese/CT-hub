@@ -190,6 +190,17 @@ body{
       ]
     },
     {
+      id:"rubrica", emoji:"📇", name:"CT Rubrica",
+      desc:"Contatti: fornitori, collaboratori, preventivi, appalti. Stessa rubrica di Pre-contabilità.",
+      url:"https://carpenteria-ticinese.github.io/CT-rubrica/",
+      status:"ok", statusLabel:"Online",
+      actions:[
+        {label:"Cerca un contatto",        kw:"rubrica contatto contatti cerca telefono numero chiamare email indirizzo persona ditta rubrca contato", hash:""},
+        {label:"Nuovo contatto in rubrica",kw:"rubrica contatto nuovo aggiungi inserisci fornitore collaboratore cliente referente", hash:""},
+        {label:"Fornitori e collaboratori",kw:"fornitori fornitore collaboratori collaboratore preventivi appalti presi conclusi marketing categoria", hash:""}
+      ]
+    },
+    {
       id:"timber", emoji:"📐", name:"TimberMaster",
       desc:"Preventivi, computi, costi, margini. Include il preventivatore. Online col deploy.",
       url:"", spec:"motore",
@@ -369,6 +380,27 @@ let savedTheme="verde";
 try{ savedTheme = localStorage.getItem("ct_hub_theme") || "verde"; }catch(e){}
 applyTheme(savedTheme);
 
+/* ---------- apertura delle app ----------
+   Ogni app si apre in una scheda SEPARATA, cos\u00ec se ne tengono aperte pi\u00f9 di
+   una insieme e il hub resta qui. La scheda ha un nome fisso per app
+   ("ct_app_<id>"): un secondo clic sulla stessa app ritrova quella scheda
+   invece di aprirne un'altra. Finch\u00e9 il hub resta aperto si tiene anche il
+   riferimento alla finestra: se \u00e8 ancora viva la si porta davanti senza
+   ricaricarla (non si perde il lavoro a met\u00e0). Le pagine interne del hub
+   (spec.html, \u00abVedi progetto\u00bb) restano invece nella stessa finestra. */
+const FINESTRE = {};
+function openApp(id, url){
+  if(!url) return;
+  const nome = "ct_app_" + id;
+  const viva = FINESTRE[id];
+  if(viva && !viva.closed){ try{ viva.focus(); return; }catch(e){} }
+  const w = window.open(url, nome);
+  if(!w) { location.href = url; return; }           // popup bloccato: si apre qui
+  try{ w.opener = null; }catch(e){}                  // la scheda nuova non vede il hub
+  try{ w.focus(); }catch(e){}
+  FINESTRE[id] = w;
+}
+
 /* ---------- ricerca ---------- */
 const norm = s => (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 const $ = id => document.getElementById(id);
@@ -379,7 +411,7 @@ APPS.forEach(a=>{
   const base = a.url || (isSpec ? "spec.html?m="+a.spec : "");
   const enabled = !!base;
   a.actions.forEach(act=>{
-    DEST.push({ app:a.name, emoji:a.emoji, label:act.label,
+    DEST.push({ id:a.id, app:a.name, emoji:a.emoji, label:act.label,
       hay:norm(a.name+" "+act.label+" "+act.kw),
       url: enabled ? (a.url ? a.url + (act.hash||"") : base) : "", enabled, isSpec });
   });
@@ -410,7 +442,11 @@ function search(qraw){
   }
   box.classList.add("on"); sel=-1; $("q").setAttribute("aria-expanded","true");
 }
-function openDest(d){ if(d && d.enabled && d.url) location.href=d.url; }
+function openDest(d){
+  if(!d || !d.enabled || !d.url) return;
+  if(d.isSpec) location.href=d.url;      // pagina interna del hub
+  else openApp(d.id, d.url);             // app vera: scheda separata
+}
 
 $("q").addEventListener("input", e=>search(e.target.value));
 $("q").addEventListener("keydown", e=>{
@@ -425,7 +461,7 @@ $("q").addEventListener("keydown", e=>{
     if(i===sel) it.scrollIntoView({block:"nearest"}); });
 });
 
-["Registra giornata","Nuova fattura","Apri un cantiere","Spese e scontrini","Nuovo preventivo"]
+["Registra giornata","Nuova fattura","Cerca un contatto","Apri un cantiere","Spese e scontrini","Nuovo preventivo"]
 .forEach(t=>{
   const b=document.createElement("button"); b.className="chip"; b.textContent=t;
   b.onclick=()=>{ const q=$("q"); q.value=t; q.focus(); search(t); };
@@ -445,7 +481,11 @@ APPS.forEach(a=>{
     '<div class="desc">'+a.desc+'</div>'+
     '<span class="pill '+a.status+'"><span class="g"></span>'+
       a.statusLabel+(enabled?(isSpec?' · Vedi progetto →':''):' · URL da impostare')+'</span>';
-  el.onclick=()=>{ if(enabled) location.href=target; };
+  el.onclick=()=>{
+    if(!enabled) return;
+    if(isSpec) location.href=target;     // pagina interna del hub
+    else openApp(a.id, target);          // app vera: scheda separata
+  };
   $("grid").appendChild(el);
 });
 
