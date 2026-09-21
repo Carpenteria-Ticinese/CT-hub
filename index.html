@@ -178,6 +178,17 @@ body{
       ]
     },
     {
+      id:"rubrica", emoji:"📇", name:"CT Rubrica",
+      desc:"Contatti: fornitori, collaboratori, preventivi, appalti. Stessa rubrica di Pre-contabilità.",
+      url:"https://carpenteria-ticinese.github.io/CT-rubrica/",
+      status:"ok", statusLabel:"Online",
+      actions:[
+        {label:"Cerca un contatto",        kw:"rubrica contatto contatti cerca telefono numero chiamare email indirizzo persona ditta rubrca contato", hash:""},
+        {label:"Nuovo contatto in rubrica",kw:"rubrica contatto nuovo aggiungi inserisci fornitore collaboratore cliente referente", hash:""},
+        {label:"Fornitori e collaboratori",kw:"fornitori fornitore collaboratori collaboratore preventivi appalti presi conclusi marketing categoria", hash:""}
+      ]
+    },
+    {
       id:"precont", emoji:"🧾", name:"Pre-contabilità",
       desc:"Movimenti, IVA, fatture, export per il commercialista.",
       url:"https://carpenteria-ticinese.github.io/CT-contabilit-/",
@@ -190,14 +201,21 @@ body{
       ]
     },
     {
-      id:"rubrica", emoji:"📇", name:"CT Rubrica",
-      desc:"Contatti: fornitori, collaboratori, preventivi, appalti. Stessa rubrica di Pre-contabilità.",
-      url:"https://carpenteria-ticinese.github.io/CT-rubrica/",
-      status:"ok", statusLabel:"Online",
+      id:"preventivatore", emoji:"📗", name:"Preventivatore",
+      desc:"Il file Excel delle offerte che usi oggi. Sul computer o su Drive.",
+      url:"", spec:"motore",
+      status:"plan", statusLabel:"File Excel",
       actions:[
-        {label:"Cerca un contatto",        kw:"rubrica contatto contatti cerca telefono numero chiamare email indirizzo persona ditta rubrca contato", hash:""},
-        {label:"Nuovo contatto in rubrica",kw:"rubrica contatto nuovo aggiungi inserisci fornitore collaboratore cliente referente", hash:""},
-        {label:"Fornitori e collaboratori",kw:"fornitori fornitore collaboratori collaboratore preventivi appalti presi conclusi marketing categoria", hash:""}
+        {label:"Apri il Preventivatore Excel", kw:"preventivatore excel offerta file listino voci prventivatore", hash:""}
+      ]
+    },
+    {
+      id:"fornitori", emoji:"🏢", name:"CT Radar Fornitori",
+      desc:"Ditte, prodotti e materiali da valutare e scegliere, per categoria.",
+      url:"", spec:"fornitori",
+      status:"plan", statusLabel:"Da avviare",
+      actions:[
+        {label:"Apri CT Radar Fornitori", kw:"fornitori radar ditte aziende prodotti materiali valutare scegliere legname isolanti fissaggi tetto", hash:""}
       ]
     },
     {
@@ -210,24 +228,6 @@ body{
       ]
     },
     {
-      id:"spartizione", emoji:"🧩", name:"Spartizione",
-      desc:"Ripartizione del manto di copertura tra le ditte.",
-      url:"https://carpenteria-ticinese.github.io/spartizione-copertura/",
-      status:"ok", statusLabel:"Online",
-      actions:[
-        {label:"Apri Spartizione copertura", kw:"spartizione ripartizione copertura tetto tegole coppi ditte grandine spartizone", hash:""}
-      ]
-    },
-    {
-      id:"preventivatore", emoji:"📗", name:"Preventivatore",
-      desc:"Il file Excel delle offerte che usi oggi. Sul computer o su Drive.",
-      url:"", spec:"motore",
-      status:"plan", statusLabel:"File Excel",
-      actions:[
-        {label:"Apri il Preventivatore Excel", kw:"preventivatore excel offerta file listino voci prventivatore", hash:""}
-      ]
-    },
-    {
       id:"collaboratori", emoji:"👷", name:"TM Collaboratori",
       desc:"Gestione collaboratori — versione interna di StaffLink.",
       url:"", spec:"collaboratori",
@@ -237,21 +237,21 @@ body{
       ]
     },
     {
-      id:"fornitori", emoji:"🏢", name:"TM Radar Fornitori",
-      desc:"Ditte, prodotti e materiali da valutare e scegliere, per categoria.",
-      url:"", spec:"fornitori",
-      status:"plan", statusLabel:"Da avviare",
-      actions:[
-        {label:"Apri TM Radar Fornitori", kw:"fornitori radar ditte aziende prodotti materiali valutare scegliere legname isolanti fissaggi tetto", hash:""}
-      ]
-    },
-    {
       id:"paghe", emoji:"💰", name:"TM Paghe",
       desc:"Registra le paghe (bozza). Gli importi vanno validati col commercialista prima dell'uso.",
       url:"https://carpenteria-ticinese.github.io/CT-paghe/",
       status:"wip", statusLabel:"Bozza",
       actions:[
         {label:"Apri TM Paghe", kw:"paghe stipendi salari buste paga prepaghe lordo netto", hash:""}
+      ]
+    },
+    {
+      id:"spartizione", emoji:"🧩", name:"Spartizione",
+      desc:"Ripartizione del manto di copertura tra le ditte.",
+      url:"https://carpenteria-ticinese.github.io/spartizione-copertura/",
+      status:"ok", statusLabel:"Online",
+      actions:[
+        {label:"Apri Spartizione copertura", kw:"spartizione ripartizione copertura tetto tegole coppi ditte grandine spartizone", hash:""}
       ]
     }
   ];
