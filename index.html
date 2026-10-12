@@ -166,7 +166,7 @@ body{
     {
       id:"cantieri", emoji:"🏗️", name:"Cantieri",
       desc:"Giornate, ore, foto, spese, regia.",
-      url:"https://carpenteria-ticinese.github.io/CarpenteriaTicinese-cantiere",
+      url:"https://carpenteria-ticinese.github.io/CarpenteriaTicinese-cantiere/",
       status:"ok", statusLabel:"Online",
       actions:[
         {label:"Registra una giornata di lavoro", kw:"giornata giornate ore lavoro registra registrare presenza operai giornta gionata", hash:""},
@@ -389,16 +389,54 @@ applyTheme(savedTheme);
    ricaricarla (non si perde il lavoro a met\u00e0). Le pagine interne del hub
    (spec.html, \u00abVedi progetto\u00bb) restano invece nella stessa finestra. */
 const FINESTRE = {};
+/* Correzione (App Cantieri v7c): un secondo clic su un'app gia' aperta sembrava non fare niente.
+   Causa: Chrome (computer e telefono) NON porta davanti un'altra scheda con focus(); e se il hub
+   era stato ricaricato, la scheda si ricaricava perdendo il lavoro a meta'.
+   Ora: si ritrova la scheda per nome (anche dopo aver ricaricato il hub) e la si "naviga" verso il
+   suo stesso indirizzo con un # in fondo: per il browser e' la stessa pagina (niente
+   ricaricamento) ma la scheda viene portata davanti. Le app sono sullo stesso indirizzo del hub
+   (carpenteria-ticinese.github.io), per questo il hub puo' leggere dove si trova la scheda. */
 function openApp(id, url){
   if(!url) return;
   const nome = "ct_app_" + id;
-  const viva = FINESTRE[id];
-  if(viva && !viva.closed){ try{ viva.focus(); return; }catch(e){} }
-  const w = window.open(url, nome);
-  if(!w) { location.href = url; return; }           // popup bloccato: si apre qui
-  try{ w.opener = null; }catch(e){}                  // la scheda nuova non vede il hub
+  let w = FINESTRE[id];
+  if(!w || w.closed){ try{ w = window.open("", nome); }catch(e){ w = null; } }
+  if(w && !w.closed){
+    let qui = "", altroIndirizzo = false;
+    try{ qui = w.location.href; }catch(e){ altroIndirizzo = true; }
+    if(altroIndirizzo){ try{ w.focus(); }catch(e){} FINESTRE[id] = w; controllaDavanti(url); return; }  // non si ricarica
+    if(qui && qui !== "about:blank"){
+      const p = qui.indexOf("#");
+      window.open((p < 0 ? qui : qui.slice(0, p)) + (p < 0 ? "#" : qui.slice(p)), nome);
+      try{ w.focus(); }catch(e){}
+      FINESTRE[id] = w; controllaDavanti(url); return;
+    }
+    try{ w.location.href = url; }catch(e){ location.href = url; return; }   // scheda nuova vuota: ci va l'app
+    try{ w.focus(); }catch(e){}
+    FINESTRE[id] = w; return;
+  }
+  w = window.open(url, nome);
+  if(!w){ location.href = url; return; }           // popup bloccato: si apre qui
   try{ w.focus(); }catch(e){}
   FINESTRE[id] = w;
+}
+/* Se dopo un attimo il hub e' ancora davanti (per esempio l'app e' in un'altra FINESTRA e Windows
+   fa solo lampeggiare l'icona in basso), lo si dice chiaramente invece di non fare niente. */
+function controllaDavanti(url){
+  setTimeout(function(){
+    if(document.visibilityState !== "visible" || !document.hasFocus()) return;   // l'app e' davanti: tutto a posto
+    let box = document.getElementById("avviso-aperta");
+    if(!box){
+      box = document.createElement("div"); box.id = "avviso-aperta";
+      box.style.cssText = "position:fixed;left:12px;right:12px;bottom:16px;z-index:9999;background:#1f3a2a;color:#fff;border:2px solid #C8A24A;border-radius:14px;padding:16px;font-size:17px;line-height:1.45;box-shadow:0 6px 24px rgba(0,0,0,.4)";
+      document.body.appendChild(box);
+    }
+    box.innerHTML = '<b>L’app è già aperta</b> in un’altra scheda o finestra. Guardala in alto tra le schede o nella barra in basso (l’icona può lampeggiare).'
+      + '<div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap"><button id="avviso-nuova" style="min-height:48px;padding:10px 16px;border-radius:10px;border:none;background:#C8A24A;color:#1a1000;font-weight:700;font-size:16px">Apri qui in una scheda nuova</button>'
+      + '<button id="avviso-chiudi" style="min-height:48px;padding:10px 16px;border-radius:10px;border:1px solid #fff;background:transparent;color:#fff;font-size:16px">Chiudi</button></div>';
+    document.getElementById("avviso-nuova").onclick = function(){ window.open(url, "_blank"); box.remove(); };
+    document.getElementById("avviso-chiudi").onclick = function(){ box.remove(); };
+  }, 1200);
 }
 
 /* ---------- ricerca ---------- */
