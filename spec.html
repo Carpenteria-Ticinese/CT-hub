@@ -85,13 +85,6 @@ const MODULES={
     manca:["Validazione col commercialista prima dell'uso ufficiale.","Collegamento automatico delle ore da App Cantieri.","Straordinari, indennità trasferta, 13ª."],
     chi:[["code","Funzioni = Code"],["prog","Validazione legale = commercialista"]]},
 
-  collaboratori:{emoji:"👷",name:"TM Collaboratori",status:"plan",
-    tagline:"Gestione del personale interno — versione ridotta di StaffLink.",
-    fa:["Anagrafica collaboratori, documenti, patenti/patentini con scadenze.","Assenze, permessi, presenze cantiere collegate.","Ricerca rapida con stato a colpo d'occhio."],
-    ci:["App costruita (React). Funziona sul PC.","Non ancora online."],
-    manca:["Deploy su Netlify (non gira su GitHub Pages).","Anagrafica operai unica condivisa con App Cantieri."],
-    chi:[["code","Deploy + funzioni = Code"],["prog","Anagrafica unica = Programmatore"]]},
-
   fornitori:{emoji:"🏢",name:"TM Radar Fornitori",status:"wip",
     tagline:"Schedare e valutare ditte, prodotti e materiali per categoria.",
     fa:["Elenco fornitori/prodotti per categoria (legname, isolanti, fissaggi, tetto…).","Valutazione e scelta, con commenti e link.","Storico prezzi per capire aumenti nel tempo (futuro)."],
@@ -120,7 +113,7 @@ const MODULES={
     manca:["Verifica del fix su tetti reali (i numeri devono tornare).","Versioning dei dati salvati; auth se diventa modulo web."],
     chi:[["code","Correzioni = Code"],["prog","Verifica numeri = Umberto"]]}
 };
-const ORDER=["pipeline","motore","cantieri","precont","spartizione","paghe","collaboratori","fornitori"];
+const ORDER=["pipeline","motore","cantieri","precont","spartizione","paghe","fornitori"];
 
 function el(h){const d=document.createElement("div");d.innerHTML=h;return d.firstElementChild;}
 function pill(s){return '<span class="pill '+s+'"><span class="g"></span>'+ST[s]+'</span>';}
