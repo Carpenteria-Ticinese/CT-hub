@@ -128,6 +128,9 @@ body{
 .card.off:hover{transform:none;box-shadow:none;border-color:var(--line2)}
 .card .head{display:flex;align-items:center;gap:11px;margin-bottom:9px}
 .card .emoji{font-size:24px}
+.card .emoji svg,.res .ic svg{width:1em;height:1em;display:block}
+.card .emoji{display:inline-flex;align-items:center}
+.res .ic{display:inline-flex;align-items:center;justify-content:center}
 .card .name{font-weight:600;font-size:17px}
 .card .desc{color:var(--ink-dim);font-size:14px;line-height:1.5}
 .pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:4px 10px;
@@ -175,6 +178,17 @@ body{
         {label:"Regia da fatturare",              kw:"regia fatturare extra lavori aggiuntivi regi", hash:""},
         {label:"Foto del cantiere",               kw:"foto immagini galleria cantiere fotografie", hash:""},
         {label:"Assenze e malattie",              kw:"assenza assenze malattia ferie infortunio permesso assenz", hash:""}
+      ]
+    },
+    {
+      id:"calendario", name:"Calendario",
+      /* icona: barre orizzontali verdi (copia di Code Pianificatore/img/calendario.svg) */
+      icon:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="2" y="2" width="60" height="60" rx="12" fill="#ffffff" stroke="#2d6a4f" stroke-width="4"/><rect x="10" y="14" width="30" height="9" rx="3" fill="#2d6a4f"/><rect x="22" y="28" width="32" height="9" rx="3" fill="#40916c"/><rect x="14" y="42" width="24" height="9" rx="3" fill="#2d6a4f"/></svg>',
+      desc:"Piano dei cantieri",
+      url:"https://carpenteria-ticinese.github.io/CT-pianificatore/",
+      status:"ok", statusLabel:"Online",
+      actions:[
+        {label:"Apri il Calendario (piano dei cantieri)", kw:"calendario piano pianificatore pianificazione cantieri gantt programma settimane squadre date calendrio planning", hash:""}
       ]
     },
     {
@@ -444,7 +458,7 @@ APPS.forEach(a=>{
   const base = a.url || (isSpec ? "spec.html?m="+a.spec : "");
   const enabled = !!base;
   a.actions.forEach(act=>{
-    DEST.push({ id:a.id, app:a.name, emoji:a.emoji, label:act.label,
+    DEST.push({ id:a.id, app:a.name, emoji:a.icon||a.emoji, label:act.label,
       hay:norm(a.name+" "+act.label+" "+act.kw),
       url: enabled ? (a.url ? a.url + (act.hash||"") : base) : "", enabled, isSpec });
   });
@@ -509,7 +523,7 @@ APPS.forEach(a=>{
   el.className="card"+(enabled?"":" off");
   el.setAttribute("aria-label",a.name+" — "+a.statusLabel);
   if(!enabled) el.setAttribute("aria-disabled","true");
-  el.innerHTML='<div class="head"><span class="emoji">'+a.emoji+'</span>'+
+  el.innerHTML='<div class="head"><span class="emoji">'+(a.icon||a.emoji)+'</span>'+
     '<span class="name">'+a.name+'</span></div>'+
     '<div class="desc">'+a.desc+'</div>'+
     '<span class="pill '+a.status+'"><span class="g"></span>'+
