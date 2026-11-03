@@ -8,23 +8,40 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="apple-mobile-web-app-title" content="Hub" />
-<link rel="manifest" href="manifest.json?v=2" />
-<link rel="icon" type="image/png" sizes="32x32" href="icone/icona-32.png?v=2" />
-<link rel="apple-touch-icon" href="icone/icona-180.png?v=2" />
+<script>
+/* tema salvato applicato subito (niente lampo); valori vecchi: grafite/scuro -> scuro, tutto il resto -> chiaro */
+(function(){var t="light";try{var v=localStorage.getItem("ct_hub_theme");if(v==="grafite"||v==="scuro")t="dark";}catch(e){}
+document.documentElement.setAttribute("data-theme",t);})();
+</script>
+<link rel="manifest" href="manifest.json?v=3" />
+<link rel="icon" type="image/png" sizes="32x32" href="icone/icona-32.png?v=3" />
+<link rel="apple-touch-icon" href="icone/icona-180.png?v=3" />
 <style>
 /* =========================================================================
    HUB — pagina che apre tutte le app
-   Colori pilotati da token --*  → la tavolozza (bottone 🎨) li cambia dal vivo.
+   Due temi soli: Chiaro e Scuro (attributo data-theme su <html>).
+   Il colore di ogni app resta nelle card, uguale nei due temi.
    ========================================================================= */
 :root{
-  /* tema di default: Verde bosco (chiaro) */
-  --bg:#F6F3EC; --bg2:#FFFFFF; --bg3:#EFEAE0;
-  --line:rgba(46,90,60,.20); --line2:rgba(33,30,24,.10);
-  --ink:#211E18; --ink-dim:#6B6459; --ink-faint:#9A9384;
-  --accent:#2E5A3C; --accent-50:rgba(46,90,60,.5); --accent-15:rgba(46,90,60,.15);
-  --ok:#2E7D46; --wip:#9C7018; --plan:#6E6A5E;
-  --shadow:0 14px 34px -18px rgba(36,74,48,.30);
+  color-scheme:light;
+  /* Chiaro: sfondo chiaro, testo scuro */
+  --bg:#F4F5F7; --bg2:#FFFFFF; --bg3:#E6E9EE;
+  --line:rgba(30,58,95,.28); --line2:rgba(20,28,40,.18);
+  --ink:#14181F; --ink-dim:#3D4652; --ink-faint:#59626F;
+  --accent:#1e3a5f; --accent-50:rgba(30,58,95,.55); --accent-15:rgba(30,58,95,.10);
+  --ok:#17692F; --wip:#80510A; --plan:#4B5563;
+  --shadow:0 14px 34px -18px rgba(20,40,70,.35);
   --r:16px; --rs:12px;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  /* Scuro: sfondo scuro, testo chiaro */
+  --bg:#0E1218; --bg2:#1A212B; --bg3:#26303D;
+  --line:rgba(150,185,230,.40); --line2:rgba(220,230,245,.22);
+  --ink:#F3F5F8; --ink-dim:#C3CBD6; --ink-faint:#9BA6B5;
+  --accent:#8DB6EA; --accent-50:rgba(141,182,234,.6); --accent-15:rgba(141,182,234,.14);
+  --ok:#7ED69B; --wip:#F2C265; --plan:#B4BDCA;
+  --shadow:0 18px 50px -20px rgba(0,0,0,.8);
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
@@ -49,29 +66,11 @@ body{
 .brand small{display:block;font-size:12px;font-weight:500;color:#dbe6f3;
   letter-spacing:2.5px;text-transform:uppercase;margin-top:1px}
 .brand span{font-size:16px}
-.themebtn{background:var(--bg2);border:1px solid var(--line);border-radius:11px;
-  height:42px;padding:0 15px;gap:8px;font-size:14px;font-weight:500;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;color:var(--ink);transition:.15s}
-.themebtn:hover{background:var(--bg3)}
-
-/* ---- palette panel ---- */
-.palette{position:absolute;right:20px;top:84px;background:var(--bg2);
-  border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
-  padding:12px;display:none;z-index:30;width:236px}
-.palette.on{display:block}
-.palette h4{margin:2px 4px 10px;font-size:11px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--ink-faint);font-weight:600}
-.sw{display:flex;align-items:center;gap:11px;width:100%;background:transparent;
-  border:1px solid transparent;border-radius:10px;padding:8px 9px;cursor:pointer;
-  font-family:inherit;font-size:14px;color:var(--ink);text-align:left;transition:.12s}
-.sw:hover{background:var(--bg3)}
-.sw[aria-pressed="true"]{border-color:var(--accent-50)}
-.sw .prev{display:flex;flex:0 0 auto}
-.sw .prev i{width:17px;height:17px;border-radius:5px;display:block;border:1px solid rgba(0,0,0,.12)}
-.sw .prev i:last-child{margin-left:-6px}
-.sw .nm{flex:1}
-.sw .chk{color:var(--accent);opacity:0;font-size:14px;flex:0 0 auto}
-.sw[aria-pressed="true"] .chk{opacity:1}
+.themebtn{background:#fff;color:#1e3a5f;border:2px solid #fff;border-radius:12px;
+  min-height:52px;min-width:136px;padding:0 18px;gap:8px;font-size:18px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-family:inherit;transition:.15s}
+.themebtn:hover{background:#dbe6f3}
+.themebtn:focus-visible{outline:3px solid #ffd54a;outline-offset:2px}
 
 /* ---- hero console ---- */
 .hero{text-align:center;padding:14px 0 6px}
@@ -159,7 +158,6 @@ body{
   .hero h1{font-size:22px}
   .grid{grid-template-columns:1fr}
   .enterhint{display:none}
-  .palette{right:15px}
 }
 @media (prefers-reduced-motion:reduce){
   .sweep i{animation:none}
@@ -177,7 +175,7 @@ body{
   <script>
   const APPS = [
     {
-      id:"cantieri", emoji:"🏗️", name:"Cantieri", color:"#e8710a", old:"app cantieri giornale",
+      id:"cantieri", emoji:"🏗️", name:"Cantieri", color:"#e8710a", fg:"#1a1a1a", old:"app cantieri giornale",
       desc:"Giornate, ore, foto, spese, regia.",
       url:"https://carpenteria-ticinese.github.io/CarpenteriaTicinese-cantiere/",
       status:"ok", statusLabel:"Online",
@@ -234,7 +232,7 @@ body{
       ]
     },
     {
-      id:"acquisti", emoji:"🛒", name:"Acquisti", color:"#138d90", old:"fornitori radar ct radar fornitori",
+      id:"acquisti", emoji:"🛒", name:"Acquisti", color:"#138d90", fg:"#1a1a1a", old:"fornitori radar ct radar fornitori",
       desc:"Prezzi d'acquisto di materiali e servizi: offerte, listini, confronto fornitori, preferito.",
       url:"https://carpenteria-ticinese.github.io/CT-radar-fornitori/",
       status:"ok", statusLabel:"Online",
@@ -265,46 +263,6 @@ body{
       ]
     }
   ];
-
-  /* ---- TEMI della tavolozza (bottone 🎨) ---- */
-  const THEMES = {
-    verde:{ name:"Verde bosco", vars:{
-      "--bg":"#F6F3EC","--bg2":"#FFFFFF","--bg3":"#EFEAE0",
-      "--line":"rgba(46,90,60,.20)","--line2":"rgba(33,30,24,.10)",
-      "--ink":"#211E18","--ink-dim":"#6B6459","--ink-faint":"#9A9384",
-      "--accent":"#2E5A3C","--accent-50":"rgba(46,90,60,.5)","--accent-15":"rgba(46,90,60,.15)",
-      "--ok":"#2E7D46","--wip":"#9C7018","--plan":"#6E6A5E",
-      "--shadow":"0 14px 34px -18px rgba(36,74,48,.30)"}},
-    oro:{ name:"Oro CT", vars:{
-      "--bg":"#F7F4ED","--bg2":"#FFFFFF","--bg3":"#F0EADD",
-      "--line":"rgba(184,137,47,.22)","--line2":"rgba(33,30,24,.10)",
-      "--ink":"#211E18","--ink-dim":"#6B6459","--ink-faint":"#9A9384",
-      "--accent":"#B8892F","--accent-50":"rgba(184,137,47,.5)","--accent-15":"rgba(184,137,47,.15)",
-      "--ok":"#2E7D46","--wip":"#9C7018","--plan":"#6E6A5E",
-      "--shadow":"0 14px 34px -18px rgba(120,90,30,.28)"}},
-    ardesia:{ name:"Ardesia", vars:{
-      "--bg":"#F1F4F6","--bg2":"#FFFFFF","--bg3":"#E6ECF0",
-      "--line":"rgba(62,110,142,.22)","--line2":"rgba(25,30,35,.10)",
-      "--ink":"#1B2228","--ink-dim":"#586570","--ink-faint":"#93A0AC",
-      "--accent":"#3E6E8E","--accent-50":"rgba(62,110,142,.5)","--accent-15":"rgba(62,110,142,.15)",
-      "--ok":"#2E7D46","--wip":"#9C7018","--plan":"#6E6A5E",
-      "--shadow":"0 14px 34px -18px rgba(40,70,95,.28)"}},
-    sabbia:{ name:"Sabbia", vars:{
-      "--bg":"#F5EEE4","--bg2":"#FFFFFF","--bg3":"#EDE3D4",
-      "--line":"rgba(180,101,58,.22)","--line2":"rgba(33,28,22,.10)",
-      "--ink":"#2A211A","--ink-dim":"#6B5E4F","--ink-faint":"#A2937F",
-      "--accent":"#B4653A","--accent-50":"rgba(180,101,58,.5)","--accent-15":"rgba(180,101,58,.15)",
-      "--ok":"#2E7D46","--wip":"#9C7018","--plan":"#6E6A5E",
-      "--shadow":"0 14px 34px -18px rgba(120,70,40,.26)"}},
-    grafite:{ name:"Grafite (scuro)", vars:{
-      "--bg":"#16130F","--bg2":"#1E1A14","--bg3":"#26211A",
-      "--line":"rgba(200,162,74,.18)","--line2":"rgba(241,235,221,.10)",
-      "--ink":"#F1EBDD","--ink-dim":"#A79E8C","--ink-faint":"#6F6858",
-      "--accent":"#C8A24A","--accent-50":"rgba(200,162,74,.5)","--accent-15":"rgba(200,162,74,.16)",
-      "--ok":"#8FBF6E","--wip":"#E0B152","--plan":"#9A9384",
-      "--shadow":"0 18px 50px -20px rgba(0,0,0,.7)"}}
-  };
-  const THEME_ORDER = ["verde","oro","ardesia","sabbia","grafite"];
   </script>
 
   <div class="top">
@@ -312,12 +270,7 @@ body{
       <span class="logo" aria-hidden="true">🏠</span>
       <div><b>Hub</b><small>Carpenteria Ticinese</small></div>
     </div>
-    <button class="themebtn" id="themeBtn" aria-label="Cambia colori (tavolozza)"
-            aria-haspopup="true" aria-expanded="false"><span aria-hidden="true">🎨</span> Tema</button>
-  </div>
-
-  <div class="palette" id="palette" role="menu" aria-label="Tavolozza colori">
-    <h4>Tavolozza colori</h4>
+    <button class="themebtn" id="themeBtn" type="button"></button>
   </div>
 
   <div class="hero">
@@ -343,66 +296,42 @@ body{
   <div class="foot">
     La ricerca lavora <b>in locale</b> e apre l’app giusta — non legge i tuoi dati.<br>
     Fatture: si scrivono in Contabilità.
-    <span class="ver">versione 2</span>
+    <span class="ver">versione 3</span>
   </div>
 
 </div>
 
 <script>
-/* ---------- tavolozza ---------- */
-function applyTheme(key){
-  const t = THEMES[key]; if(!t) return;
-  const root = document.documentElement;
-  for(const k in t.vars){ root.style.setProperty(k, t.vars[k]); }
-  try{ localStorage.setItem("ct_hub_theme", key); }catch(e){}
-  document.querySelectorAll(".sw").forEach(s=>{
-    s.setAttribute("aria-pressed", s.dataset.k===key ? "true":"false");
-  });
+/* ---------- tema: Chiaro / Scuro ----------
+   Il tasto mostra il tema a cui si passa. Salvato in localStorage ("chiaro" | "scuro"),
+   sempre in try/catch. Valori vecchi: "grafite" -> scuro, tutti gli altri -> chiaro. */
+function temaSalvato(){
+  try{ const v=localStorage.getItem("ct_hub_theme"); if(v==="scuro"||v==="grafite") return "scuro"; }catch(e){}
+  return "chiaro";
 }
-(function buildPalette(){
-  const pal = document.getElementById("palette");
-  THEME_ORDER.forEach(k=>{
-    const t = THEMES[k];
-    const b = document.createElement("button");
-    b.className="sw"; b.dataset.k=k; b.setAttribute("role","menuitemradio");
-    b.setAttribute("aria-pressed","false"); b.setAttribute("aria-label","Tema "+t.name);
-    b.innerHTML =
-      '<span class="prev"><i style="background:'+t.vars["--bg2"]+'"></i>'+
-      '<i style="background:'+t.vars["--accent"]+';border-color:transparent"></i></span>'+
-      '<span class="nm">'+t.name+'</span><span class="chk" aria-hidden="true">✓</span>';
-    b.onclick=()=>applyTheme(k);
-    pal.appendChild(b);
-  });
-})();
-/* Tasto Indietro (mouse, tastiera, telefono): le viste interne (tavolozza colori, risultati della
-   ricerca) sono UN passo nella storia. Indietro le chiude; solo dopo si esce dalla pagina. */
+function applyTheme(t){
+  t = (t==="scuro") ? "scuro" : "chiaro";
+  document.documentElement.setAttribute("data-theme", t==="scuro" ? "dark" : "light");
+  try{ localStorage.setItem("ct_hub_theme", t); }catch(e){}
+  const b=document.getElementById("themeBtn");
+  const vai = t==="scuro" ? "chiaro" : "scuro";
+  b.innerHTML = vai==="scuro" ? '<span aria-hidden="true">\u{1F319}</span> Scuro' : '<span aria-hidden="true">☀️</span> Chiaro';
+  b.setAttribute("aria-label", "Passa al tema " + (vai==="scuro" ? "Scuro" : "Chiaro"));
+}
+document.getElementById("themeBtn").addEventListener("click", ()=>{
+  applyTheme(document.documentElement.getAttribute("data-theme")==="dark" ? "chiaro" : "scuro");
+});
+applyTheme(temaSalvato());
+/* Tasto Indietro (mouse, tastiera, telefono): i risultati della ricerca sono UN passo nella storia.
+   Indietro li chiude; solo dopo si esce dalla pagina. */
 function vistaInStoria(){ try{ return !!(history.state && history.state.ctVista); }catch(e){ return false; } }
 function apriVista(){ try{ if(!vistaInStoria()) history.pushState({ctVista:1}, ""); }catch(e){} }
 function chiudiVisteUI(){
-  const pal=document.getElementById("palette"), btn=document.getElementById("themeBtn");
-  pal.classList.remove("on"); btn.setAttribute("aria-expanded","false");
   const r=document.getElementById("results"); r.classList.remove("on"); r.innerHTML="";
   const q=document.getElementById("q"); q.value=""; q.setAttribute("aria-expanded","false");
   sel=-1; shown=[];
 }
-function chiudiPalette(){
-  const pal=document.getElementById("palette");
-  pal.classList.remove("on"); document.getElementById("themeBtn").setAttribute("aria-expanded","false");
-  if(!document.getElementById("results").classList.contains("on") && vistaInStoria()){ try{ history.back(); }catch(e){} }
-}
 window.addEventListener("popstate", ()=>{ chiudiVisteUI(); });
-(function(){
-  const btn=document.getElementById("themeBtn"), pal=document.getElementById("palette");
-  btn.addEventListener("click", e=>{ e.stopPropagation();
-    if(pal.classList.contains("on")){ chiudiPalette(); return; }
-    pal.classList.add("on"); btn.setAttribute("aria-expanded","true"); apriVista(); });
-  document.addEventListener("click", e=>{
-    if(!pal.contains(e.target) && e.target!==btn && pal.classList.contains("on")) chiudiPalette(); });
-  document.addEventListener("keydown", e=>{ if(e.key==="Escape" && pal.classList.contains("on")) chiudiPalette(); });
-})();
-let savedTheme="verde";
-try{ savedTheme = localStorage.getItem("ct_hub_theme") || "verde"; }catch(e){}
-applyTheme(savedTheme);
 
 /* ---------- apertura delle app ----------
    Ogni app si apre in una scheda SEPARATA, cos\u00ec se ne tengono aperte pi\u00f9 di
@@ -484,7 +413,7 @@ function search(qraw){
   const q=norm(qraw).trim(), box=$("results");
   if(!q){ box.classList.remove("on"); box.innerHTML=""; sel=-1; shown=[];
     $("q").setAttribute("aria-expanded","false");
-    if(!$("palette").classList.contains("on") && vistaInStoria()){ try{ history.back(); }catch(e){} }
+    if(vistaInStoria()){ try{ history.back(); }catch(e){} }
     return; }
   const toks=q.split(/\s+/);
   shown = DEST.map(d=>{ let sc=0; toks.forEach(t=>{ if(d.hay.includes(t)) sc++; }); return {d,sc}; })
