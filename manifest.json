@@ -1,6 +1,6 @@
 {
-  "name": "Centro · Carpenteria Ticinese",
-  "short_name": "Centro",
+  "name": "Hub · Carpenteria Ticinese",
+  "short_name": "Hub",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
