@@ -13,9 +13,9 @@
 (function(){var t="light";try{var v=localStorage.getItem("ct_hub_theme");if(v==="grafite"||v==="scuro")t="dark";}catch(e){}
 document.documentElement.setAttribute("data-theme",t);})();
 </script>
-<link rel="manifest" href="manifest.json?v=3" />
-<link rel="icon" type="image/png" sizes="32x32" href="icone/icona-32.png?v=3" />
-<link rel="apple-touch-icon" href="icone/icona-180.png?v=3" />
+<link rel="manifest" href="manifest.json?v=4" />
+<link rel="icon" type="image/png" sizes="32x32" href="icone/icona-32.png?v=4" />
+<link rel="apple-touch-icon" href="icone/icona-180.png?v=4" />
 <style>
 /* =========================================================================
    HUB — pagina che apre tutte le app
@@ -224,11 +224,11 @@ body{
     },
     {
       id:"preventivi", emoji:"📐", name:"Preventivi", color:"#c0392b", old:"preventivatore excel timbermaster timber",
-      desc:"Offerte calcolate dal costo. Per ora si usa ancora il file Excel.",
-      url:"",
-      status:"wip", statusLabel:"In arrivo",
+      desc:"Offerte calcolate dal costo.",
+      url:"https://ct-preventivi.polished-poetry-7b27.workers.dev/",
+      status:"ok", statusLabel:"Online",
       actions:[
-        {label:"Nuovo preventivo (in arrivo)", kw:"preventivo preventivare preventivatore offerta file excel listino voci costi margini computi prventivo prventivatore", hash:""}
+        {label:"Nuovo preventivo", kw:"preventivo preventivare preventivatore offerta file excel listino voci costi margini computi prventivo prventivatore", hash:""}
       ]
     },
     {
@@ -296,7 +296,7 @@ body{
   <div class="foot">
     La ricerca lavora <b>in locale</b> e apre l’app giusta — non legge i tuoi dati.<br>
     Fatture: si scrivono in Contabilità.
-    <span class="ver">versione 3</span>
+    <span class="ver">versione 4</span>
   </div>
 
 </div>
