@@ -13,9 +13,9 @@
 (function(){var t="light";try{var v=localStorage.getItem("ct_hub_theme");if(v==="grafite"||v==="scuro")t="dark";}catch(e){}
 document.documentElement.setAttribute("data-theme",t);})();
 </script>
-<link rel="manifest" href="manifest.json?v=5" />
-<link rel="icon" type="image/png" sizes="32x32" href="icone/icona-32.png?v=5" />
-<link rel="apple-touch-icon" href="icone/icona-180.png?v=5" />
+<link rel="manifest" href="manifest.json?v=6" />
+<link rel="icon" type="image/png" sizes="32x32" href="icone/icona-32.png?v=6" />
+<link rel="apple-touch-icon" href="icone/icona-180.png?v=6" />
 <style>
 /* =========================================================================
    HUB — pagina che apre tutte le app
@@ -129,6 +129,9 @@ body{
   transition:.18s;color:inherit;font-family:inherit;width:100%}
 .card:hover{border-color:var(--c,var(--line));transform:translateY(-2px);box-shadow:var(--shadow)}
 .card.off{cursor:not-allowed}
+.card.soon{cursor:pointer;border-style:dashed}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);max-width:calc(100% - 32px);background:var(--ink,#111);color:var(--bg,#fff);padding:14px 20px;border-radius:12px;font-size:17px;font-weight:600;z-index:50;box-shadow:0 6px 24px rgba(0,0,0,.3);display:none;text-align:center}
+#toast.on{display:block}
 .card.off:hover{transform:none;box-shadow:none;border-color:var(--c,var(--line2))}
 .card{overflow:hidden;padding:0;border:2px solid var(--c,var(--line2))}
 .card .head{display:flex;align-items:center;gap:11px;margin:0;padding:12px 16px;background:var(--c);color:var(--fg,#fff)}
@@ -261,6 +264,14 @@ body{
       actions:[
         {label:"Apri Spartizione copertura", kw:"spartizione ripartizione copertura tetto tegole coppi ditte grandine spartizone", hash:""}
       ]
+    },{
+      id:"costi", emoji:"📊", name:"Costi aziendali", color:"#4B5563", old:"costi azienda aziendali spese generali",
+      desc:"Costi dell'azienda: l'app non è ancora pronta.",
+      url:"", soon:true,
+      status:"plan", statusLabel:"⏳ In arrivo",
+      actions:[
+        {label:"Costi aziendali (in arrivo)", kw:"costi aziendali azienda spese generali costo orario", hash:""}
+      ]
     }
   ];
   </script>
@@ -290,13 +301,14 @@ body{
     <ul class="results" id="results" role="listbox" aria-label="Risultati"></ul>
   </div>
 
+  <div id="toast" role="status" aria-live="polite"></div>
   <div class="eyebrow">Moduli</div>
   <div class="grid" id="grid"></div>
 
   <div class="foot">
     La ricerca lavora <b>in locale</b> e apre l’app giusta — non legge i tuoi dati.<br>
     Fatture: si scrivono in Contabilità.
-    <span class="ver">versione 5</span>
+    <span class="ver">versione 6</span>
   </div>
 
 </div>
@@ -354,6 +366,8 @@ window.addEventListener("popstate", ()=>{ chiudiVisteUI(); });
    in un'altra finestra, il hub e' installato come app...) si apre l'app in una scheda nuova.
    4. finestre nuove bloccate dal browser -> l'app si apre qui, al posto del hub. */
 const FINESTRE = {};
+let _tt;
+function avviso(t){ const x=$("toast"); x.textContent=t; x.classList.add("on"); clearTimeout(_tt); _tt=setTimeout(()=>x.classList.remove("on"),3500); }
 /* Storia (App Cantieri v7c): Chrome (computer e telefono) NON porta davanti un'altra scheda con
    focus(); e se il hub era stato ricaricato, la scheda si ricaricava perdendo il lavoro a meta'.
    Per questo si ritrova la scheda per nome (anche dopo aver ricaricato il hub) e la si "naviga"
@@ -481,7 +495,7 @@ APPS.forEach(a=>{
   const target = a.url || (isSpec ? "spec.html?m="+a.spec : "");
   const enabled = !!target;
   const el=document.createElement("button");
-  el.className="card"+(enabled?"":" off");
+  el.className="card"+(enabled?"":(a.soon?" off soon":" off"));
   el.style.setProperty("--c",a.color); if(a.fg) el.style.setProperty("--fg",a.fg);
   el.setAttribute("aria-label",a.name+" — "+a.statusLabel);
   if(!enabled) el.setAttribute("aria-disabled","true");
@@ -491,7 +505,7 @@ APPS.forEach(a=>{
     '<span class="pill '+a.status+'"><span class="g"></span>'+
       a.statusLabel+(enabled?(isSpec?' · Vedi progetto →':''):'')+'</span>';
   el.onclick=()=>{
-    if(!enabled) return;
+    if(!enabled){ if(a.soon) avviso("In arrivo: l'app non è ancora pronta"); return; }
     if(isSpec) location.href=target;     // pagina interna del hub
     else openApp(a.id, target);          // app vera: scheda separata
   };
@@ -500,6 +514,6 @@ APPS.forEach(a=>{
 
 if(!("ontouchstart" in window)) $("q").focus();
 </script>
-<script src="aggiorna.js?v=5" data-versione="5"></script>
+<script src="aggiorna.js?v=6" data-versione="6"></script>
 </body>
 </html>
