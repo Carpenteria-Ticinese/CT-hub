@@ -13,9 +13,9 @@
 (function(){var t="light";try{var v=localStorage.getItem("ct_hub_theme");if(v==="grafite"||v==="scuro")t="dark";}catch(e){}
 document.documentElement.setAttribute("data-theme",t);})();
 </script>
-<link rel="manifest" href="manifest.json?v=7" />
-<link rel="icon" type="image/png" sizes="32x32" href="icone/icona-32.png?v=7" />
-<link rel="apple-touch-icon" href="icone/icona-180.png?v=7" />
+<link rel="manifest" href="manifest.json?v=8" />
+<link rel="icon" type="image/png" sizes="32x32" href="icone/icona-32.png?v=8" />
+<link rel="apple-touch-icon" href="icone/icona-180.png?v=8" />
 <style>
 /* =========================================================================
    HUB — pagina che apre tutte le app
@@ -209,8 +209,7 @@ body{
         {label:"Commesse (stato, numero, indirizzo)", kw:"anagrafiche commessa commesse cantiere cantieri stato numero indirizzo cliente anagrafica", hash:"#commesse"},
         {label:"Persone: dipendenti ed esterni",      kw:"anagrafiche persona persone dipendente dipendenti esterno esterni lattoniere operaio operai accesso accessi documenti", hash:"#persone"},
         {label:"Cerca un contatto",                   kw:"rubrica contatto contatti cerca telefono numero chiamare email indirizzo ditta fornitore cliente rubrca contato", hash:"#contatti"},
-        {label:"Nuovo contatto",                      kw:"rubrica contatto nuovo aggiungi inserisci fornitore collaboratore cliente referente", hash:"#nuovo-contatto-rubrica"},
-        {label:"Rubrica vecchia (riserva: foto e categorie)", kw:"rubrica vecchia riserva foto categorie", hash:"riserva/"}
+        {label:"Nuovo contatto",                      kw:"rubrica contatto nuovo aggiungi inserisci fornitore collaboratore cliente referente", hash:"#nuovo-contatto-rubrica"}
       ]
     },
     {
@@ -308,7 +307,7 @@ body{
   <div class="foot">
     La ricerca lavora <b>in locale</b> e apre l’app giusta — non legge i tuoi dati.<br>
     Fatture: si scrivono in Contabilità.
-    <span class="ver">versione 7</span>
+    <span class="ver">versione 8</span>
   </div>
 
 </div>
@@ -514,6 +513,6 @@ APPS.forEach(a=>{
 
 if(!("ontouchstart" in window)) $("q").focus();
 </script>
-<script src="aggiorna.js?v=7" data-versione="7"></script>
+<script src="aggiorna.js?v=8" data-versione="8"></script>
 </body>
 </html>
